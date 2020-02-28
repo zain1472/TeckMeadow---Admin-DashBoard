@@ -1,11 +1,15 @@
-var socket = io("https://5kqru.sse.codesandbox.io/");
+var socket = io("http://localhost:3000/");
 var currentUser;
 function add() {
   if (!currentUser) {
     // location.reload();
   } else {
     socket.on("connect", () => {
-      socket.emit("new-user", { name: currentUser.username, id: socket.id });
+      socket.emit("new-user", {
+        name: currentUser.username,
+        id: socket.id,
+        userId: currentUser._id
+      });
       socket.on("message", data => {
         console.log(data);
         appendMessage(data.message);
@@ -40,7 +44,10 @@ function add() {
   });
 }
 function appendMessage(message) {
-  var newMessage = document.createElement("li");
-  newMessage.innerText = message;
+  var newMessage = document.createElement("div");
+  newMessage.className = "message-item";
+
+  // newMessage.firstChild.className = "message-item-content";
+
   document.getElementById("messages").append(newMessage);
 }

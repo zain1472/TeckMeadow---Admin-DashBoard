@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const flash = require("connect-flash");
 var middleware = require("./middleware/index");
 var userRoutes = require("./routes/users");
+var adminRoutes = require("./routes/adminRoutes");
 var Message = require("./models/message");
 var users = [];
 
@@ -66,9 +67,20 @@ app.get("/", middleware.isLoggedIn, function(req, res) {
 app.use(require("express").static("public"));
 
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 
 io.on("connection", function(socket) {
   socket.on("new-user", data => {
+    console.log(data);
+    socket.userId = data.userId;
+    User.findById(data.userId, function(err, user) {
+      if (err) {
+        console.log(err);
+      } else {
+        user.isOnline = true;
+        user.save();
+      }
+    });
     users[data.name] = { socket: data.id };
     console.log(users);
   });
@@ -90,7 +102,6 @@ io.on("connection", function(socket) {
             } else {
               user.messages.push(message);
               user.save();
-              console.log(user);
             }
           });
         }
@@ -98,12 +109,22 @@ io.on("connection", function(socket) {
     );
 
     console.log(data);
-    if (io.sockets.connected[users[data.reciever].socket]) {
+    if (io.sockets.connected[users[data.reciever]]) {
       io.sockets.connected[users[data.reciever].socket].emit("message", data);
     }
   });
   socket.on("disconnect", function() {
-    console.log("disconnect");
+    User.findById(socket.userId, function(err, user) {
+      if (err) {
+        console.log(err);
+      } else {
+        if (user) {
+          user.isOnline = false;
+
+          user.save();
+        }
+      }
+    });
   });
 });
 http.listen(3000, function() {

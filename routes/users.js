@@ -16,7 +16,11 @@ router.get("/register", function(req, res, next) {
 
 // handling new user
 router.post("/register", (req, res) => {
-  var newUser = new User({ username: req.body.username });
+  var newUser = new User({
+    username: req.body.username,
+    lastname: req.body.lastname,
+    firstname: req.body.firstname
+  });
   User.register(newUser, req.body.password, function(err) {
     if (err) {
       console.log(err);
@@ -30,11 +34,25 @@ router.post("/register", (req, res) => {
     }
   });
 });
+router.get("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
+  User.findById(req.params.id, function(err, newUser) {
+    if (err) {
+      console.log(err);
+      req.flash("error", err.message);
+      return res.redirect("/edit");
+    } else {
+      newUser.isAdmin = true;
+      newUser.save();
+      console.log(newUser);
+      res.redirect("/");
+    }
+  });
+});
 router.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/"
+    failureRedirect: "/user/login"
   }),
   (req, res) => {}
 );

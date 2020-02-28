@@ -1,19 +1,17 @@
-import User from "./models/user";
-
 module.exports = {
-  checkPasswordChangePermission: function(req, res, next) {
-    if (req.isAuthenticated()) {
-      User.findById(req.user.id, function(err, foundCampground) {
-        if (foundCampground.author.id.equals(req.user._id)) {
-          next();
-        } else {
-          res.redirect("back");
-        }
-      });
-    } else {
-      res.redirect("back");
-    }
-  },
+  // checkPasswordChangePermission: function(req, res, next) {
+  //   if (req.isAuthenticated()) {
+  //     User.findById(req.user.id, function(err, foundCampground) {
+  //       if (foundCampground.author.id.equals(req.user._id)) {
+  //         next();
+  //       } else {
+  //         res.redirect("back");
+  //       }
+  //     });
+  //   } else {
+  //     res.redirect("back");
+  //   }
+  // },
   isLoggedIn: function(req, res, next) {
     if (req.isAuthenticated()) {
       return next();
@@ -47,5 +45,18 @@ module.exports = {
     //   } else {
     //     res.redirect("back");
     //   }
+  },
+  isAdmin: function(req, res, next) {
+    if (req.isAuthenticated()) {
+      console.log("current user");
+      console.log(req.user);
+      if (req.user.isAdmin == true) {
+        return next();
+      } else {
+        res.redirect("back");
+      }
+    } else {
+      res.redirect("/user/login");
+    }
   }
 };
