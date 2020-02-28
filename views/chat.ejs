@@ -14,7 +14,8 @@
     />
     <script>var currentUser ={
       username:"<%=currentUser.username%>",
-      _id:"<%=currentUser._id%>"
+      _id:"<%=currentUser._id%>",
+      isAdmin:"yes"
     } </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/script.js"></script>
@@ -32,11 +33,11 @@
       <div class="sidebar" id="user-menu">
         <div
           class="py-4 text-center"
-          data-backround-image="../../assets/media/image/image1.jpg"
+          data-backround-image="/assets/media/image/image1.jpg"
         >
           <figure class="avatar avatar-lg mb-3 border-0">
             <img
-              src="../../assets/media/image/user/women_avatar1.jpg"
+              src="/assets/media/image/user/women_avatar1.jpg"
               class="rounded-circle"
               alt="image"
             />
@@ -786,8 +787,7 @@
                     <div class="message-item">
                 <%}%>
                     <div class="message-item-content"><%=message.message%></div>
-                    <span class="time small text-muted font-italic"
-                      >
+                    <span class="time small text-muted font-italic">
                       <%if ((Date.now() - message.dated)> (1000*60*60)) {%>
                       <%=message.dated.toDateString()%>
                         

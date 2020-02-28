@@ -46,8 +46,16 @@ function add() {
 function appendMessage(message) {
   var newMessage = document.createElement("div");
   newMessage.className = "message-item";
-
+  var messageContent = document.createElement("div");
+  messageContent.className = "message-item-content";
   // newMessage.firstChild.className = "message-item-content";
+  messageContent.innerText = message;
+  var time = document.createElement("span");
+  time.className = "time small text-muted font-italic";
+  time.innerText = "Just Now";
+
+  newMessage.append(messageContent);
+  newMessage.append(time);
 
   document.getElementById("messages").append(newMessage);
 }
