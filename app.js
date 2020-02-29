@@ -100,13 +100,16 @@ io.on("connection", function(socket) {
             } else {
               user.messages.push(message);
               user.save();
-              console.log(data.reciever);
-              users[data.reciever].emit("message", data);
             }
           });
         }
       }
     );
+
+    console.log(data);
+    if (io.sockets.connected[users[data.reciever].socket]) {
+      io.sockets.connected[users[data.reciever].socket].emit("message", data);
+    }
   });
   socket.on("disconnect", function() {
     User.findById(socket.userId, function(err, user) {
