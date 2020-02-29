@@ -62,13 +62,13 @@ function appendMessage(message, me) {
   newMessage.append(messageContent);
   newMessage.append(time);
 
-  document.getElementById("messages").append(newMessage);
-  $("#messages").animate(
-    {
-      scrollTop: $(".message-content")
-        .last()
-        .scrollTop()
-    },
-    1000
-  );
+  // document.getElementById("messages").append(newMessage);
+  // $("#messages").animate(
+  //   {
+  //     scrollTop: $(".message-content")
+  //       .last()
+  //       .scrollTop()
+  //   },
+  //   1000
+  // );
 }

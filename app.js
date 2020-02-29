@@ -101,9 +101,7 @@ io.on("connection", function(socket) {
               user.messages.push(message);
               user.save();
               console.log(data.reciever);
-              if (users[data.reciever]) {
-                users[data.reciever].emit("message", data);
-              }
+              users[data.reciever].emit("message", data);
             }
           });
         }
