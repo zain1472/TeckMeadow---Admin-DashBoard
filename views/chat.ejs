@@ -15,8 +15,22 @@
     <script>var currentUser ={
       username:"<%=currentUser.username%>",
       _id:"<%=currentUser._id%>",
-      isAdmin:"yes"
-    } </script>
+      <%if(currentUser.isAdmin){%>
+      isAdmin:true
+      <%}else{%>
+      isAdmin:false
+      <%}%>
+      
+    }
+    var user ={
+      username:"<%=user.username%>",
+      _id:"<%=user._id%>",
+      <%if(user.isAdmin){%>
+      isAdmin:true
+      <%}else{%>
+      isAdmin:false
+      <%}%>
+      } </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/script.js"></script>
   </head>
@@ -780,10 +794,10 @@
                 <!-- begin::messages -->
                 <div id="messages" class="messages">
                 <% user.messages.forEach(message=>{%>
-                <%if (message.sender==currentUser.username){%>
+                <%if (message.sender=="admin"){%>
                     <div class="message-item me">
-                <%}%>
-                <%if (!(message.sender==currentUser.username)){%>
+                <%}else{%>
+              
                     <div class="message-item">
                 <%}%>
                     <div class="message-item-content"><%=message.message%></div>

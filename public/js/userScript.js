@@ -1,6 +1,4 @@
 var socket = io("http://localhost:3000/");
-var currentUser;
-
 function add() {
   if (!currentUser) {
     // location.reload();
@@ -19,12 +17,8 @@ function add() {
   }
   var sender, reciever;
   if (currentUser) {
-    if (currentUser.isAdmin) {
-      sender = "admin";
-      reciever = user.username;
-      id = user._id;
-    } else {
-      reciever = "wela";
+    {
+      reciever = "zain";
       sender = currentUser.username;
       id = currentUser._id;
     }
@@ -63,12 +57,12 @@ function appendMessage(message, me) {
   newMessage.append(time);
 
   document.getElementById("messages").append(newMessage);
-  $("#messages").animate(
-    {
-      scrollTop: $(".message-content")
-        .last()
-        .scrollTop()
-    },
-    1000
-  );
+  // $("#messages").animate(
+  //   {
+  //     scrollTop: $(".message-content")
+  //       .last()
+  //       .scrollTop()
+  //   },
+  //   1000
+  // );
 }

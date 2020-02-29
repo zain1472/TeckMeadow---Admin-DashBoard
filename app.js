@@ -55,10 +55,8 @@ app.get("/", middleware.isLoggedIn, function(req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render("index.ejs", {
-          currentUser: req.user,
-          user: req.user,
-          messages: messages.messages
+        res.render("user/chat.ejs", {
+          currentUser: messages
         });
       }
     });
@@ -102,16 +100,15 @@ io.on("connection", function(socket) {
             } else {
               user.messages.push(message);
               user.save();
+              console.log(data.reciever);
+              if (users[data.reciever]) {
+                users[data.reciever].emit("message", data);
+              }
             }
           });
         }
       }
     );
-
-    console.log(data);
-    if (io.sockets.connected[users[data.reciever]]) {
-      io.sockets.connected[users[data.reciever].socket].emit("message", data);
-    }
   });
   socket.on("disconnect", function() {
     User.findById(socket.userId, function(err, user) {

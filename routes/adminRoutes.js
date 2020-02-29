@@ -10,7 +10,6 @@ router.get("/user/:id/chat", function(req, res, next) {
       if (err) {
         console.log(err);
       } else {
-        console.log(user);
         res.render("chat", { user: user });
       }
     });
