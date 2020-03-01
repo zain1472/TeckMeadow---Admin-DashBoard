@@ -22,10 +22,13 @@ var userSchema = new mongoose.Schema({
   },
   firstname: String,
   lastname: String,
-  isOnline:{
-    type:Boolean,
+  isOnline: {
+    type: Boolean,
     default: false
-  }
+  },
+  country: String,
+  image: String,
+  gender: String
 });
 userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", userSchema);

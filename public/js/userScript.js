@@ -1,6 +1,6 @@
-function add() {
-  var socket = io("http://localhost:3000/");
+var socket = io("http://localhost:3000/");
 
+function add() {
   socket.on("connect", () => {
     socket.emit("new-user", {
       name: currentUser.username,

@@ -1,31 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <title>Nago - Admin & Dashboard HTML Template</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>TeckMeadow - where Technology Meets Spirituality</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../../assets/media/image/favicon.png"/>
+    <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
 
     <!-- Plugin styles -->
-    <link rel="stylesheet" href="/vendors/bundle.css" type="text/css">
-
-        <!-- Datatable -->
-    <link rel="stylesheet" href="/vendors/dataTable/dataTables.min.html" type="text/css">
+    <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
 
     <!-- App styles -->
-    <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css">
-</head>
-<body  class="boxed-layout">
+    <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
+  </head>
 
-<!-- begin::preloader-->
-<div class="preloader">
-    <div class="preloader-icon"></div>
-</div>
-<!-- end::preloader -->
+  <body class="boxed-layout">
+    <!-- begin::preloader-->
+    <div class="preloader">
+      <div class="preloader-icon"></div>
+    </div>
+    <!-- end::preloader -->
 
-<!-- BEGIN: Sidebar Group -->
-<div class="sidebar-group">
+    <!-- BEGIN: Sidebar Group -->
+    <div class="sidebar-group">
       <!-- BEGIN: User Menu -->
       <div class="sidebar" id="user-menu">
         <div
@@ -145,16 +144,15 @@
       <!-- END: User Menu -->
 
       <!-- BEGIN: Settings -->
-      
+
       <!-- END: Settings -->
     </div>
-<!-- END: Sidebar Group -->
+    <!-- END: Sidebar Group -->
 
-<!-- begin::main -->
-<div class="layout-wrapper">
-
-    <!-- begin::header -->
-    <div class="header d-print-none">
+    <!-- begin::main -->
+    <div class="layout-wrapper">
+      <!-- begin::header -->
+      <div class="header d-print-none">
         <div class="header-left">
           <div class="navigation-toggler">
             <a href="#" data-action="navigation-toggler">
@@ -163,11 +161,7 @@
           </div>
           <div class="header-logo">
             <a href="index-2.html">
-              <img
-                class="logo"
-                src="/assets/media/image/logo.png"
-                alt="logo"
-              />
+              <img class="logo" src="/assets/media/image/logo.png" alt="logo" />
               <img
                 class="logo-light"
                 src="/assets/media/image/logo-light.png"
@@ -185,8 +179,6 @@
           </div>
           <div class="header-body-right">
             <ul class="navbar-nav">
-              
-
               <!-- begin::header fullscreen -->
               <li class="nav-item dropdown">
                 <a
@@ -202,19 +194,19 @@
               <!-- end::header fullscreen -->
 
               <!-- begin::header search -->
-              
+
               <!-- end::header search -->
 
               <!-- begin::apps -->
-              
+
               <!-- end::apps -->
 
               <!-- begin::header messages dropdown -->
-              
+
               <!-- END: Cart -->
 
               <!-- begin::settings -->
-              
+
               <!-- end::settings -->
 
               <!-- begin::user menu -->
@@ -225,7 +217,9 @@
                   title="User menu"
                   data-sidebar-target="#user-menu"
                 >
-                  <span class="mr-2 d-sm-inline d-none"><%=currentUser.username%></span>
+                  <span class="mr-2 d-sm-inline d-none"
+                    ><%=currentUser.username%></span
+                  >
                   <figure class="avatar avatar-sm">
                     <img
                       src="/assets/media/image/user/women_avatar1.jpg"
@@ -250,15 +244,13 @@
           </div>
         </div>
       </div>
-    <!-- end::header -->
+      <!-- end::header -->
 
-    <div class="content-wrapper">
-
+      <div class="content-wrapper">
         <!-- begin::navigation -->
         <div class="navigation">
           <div class="navigation-menu-tab">
             <ul>
-              
               <li>
                 <a
                   href="#"
@@ -302,12 +294,11 @@
                 >
                   <i data-feather="users"></i>
                 </a>
-              
+              </li>
             </ul>
           </div>
           <div class="navigation-menu-body">
             <div class="navigation-menu-group">
-              
               <div id="analytics">
                 <ul>
                   <li class="navigation-divider d-flex align-items-center">
@@ -572,117 +563,16 @@
                     <a href="/user/<%=currentUser._id%>">Profile</a>
                   </li>
                   <li>
-                    <a href="/admin/user">User List</a>
+                    <a href="/user/<%=currentUser._id%>/edit">User List</a>
                   </li>
                   <li>
-                    <a href="/user/<%=currentUser._id%>/edit">User Edit</a>
+                    <a href="/admin/user">User Edit</a>
                   </li>
-                  
-                  
                 </ul>
               </div>
-              
             </div>
           </div>
         </div>
-        <!-- end::navigation -->
-
-        <div class="content-body">
-
-            <div class="content">
-
-                
-    
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="user-list" class="table table-lg">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Country</th>
-                                <th>Role</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <%var i=1;%>
-                            <%users.forEach(user=>{%>                            
-                            <tr>
-                                <td></td>
-                                <td><%=i++%></td>
-                                <td>
-                                    <a href="/user/<%=user._id%>">
-                                        <figure class="avatar avatar-sm mr-2">
-                                            <img src="/uploads/<%=user.image%>"
-                                                 class="rounded-circle" alt="avatar">
-                                        </figure>
-                                        <%=user.firstname%>&nbsp<%=user.lastname%>
-                                    </a>
-                                </td>
-                                <td><%=user.username%></td>
-                                <td><%=user.country%></td>
-                                
-                                <td>
-                                    <%if(user.isAdmin){%>
-                                    <span class="badge bg-success-bright text-success">Admin</span>
-                                    <%}else{%>
-                                    <span class="badge bg-info-bright text-info">Employee</span>
-                                    <%}%>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-secondary" data-toggle="tooltip" title="Edit">
-                                        <i class="ti-pencil"></i>
-                                    </a>
-                                    <a href="#" class="text-danger ml-2" data-toggle="tooltip" title="Delete">
-                                        <i class="ti-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <%})%>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
-
-            </div>
-
-            <!-- begin::footer -->
-            <footer class="content-footer">
-                <div>© 2020 TeckMeadow - Dashboard</a></div>
-                
-            </footer>
-            <!-- end::footer -->
-
-        </div>
-
-    </div>
-
-</div>
-<!-- end::main -->
-
-<!-- Plugin scripts -->
-<script src="../../vendors/bundle.js"></script>
-
-    <!-- Datatable -->
-    <script src="../../vendors/dataTable/dataTables.min-2.html"></script>
-
-    <script src="../../assets/js/examples/pages/user-list.js"></script>
-
-<!-- App scripts -->
-<script src="../../assets/js/app.min.js"></script>
-
-</body>
-
-<!-- Mirrored from nago.laborasyon.com/demos/layouts/boxed-layout/user-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2020 21:52:48 GMT -->
-</html>

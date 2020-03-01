@@ -8,6 +8,7 @@ const localStrategy = require("passport-local");
 const User = require("./models/user");
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
+var methodOverride = require("method-override");
 var middleware = require("./middleware/index");
 var userRoutes = require("./routes/users");
 var adminRoutes = require("./routes/adminRoutes");
@@ -22,6 +23,7 @@ mongoose.connect(
     useUnifiedTopology: true
   }
 );
+app.use(methodOverride("_method"));
 app.use(
   require("express-session")({
     secret: "TeckMeadow rockssss.",
@@ -30,7 +32,7 @@ app.use(
   })
 );
 app.use(flash());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(passport.initialize());
