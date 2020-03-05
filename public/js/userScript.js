@@ -1,18 +1,14 @@
-var socket = io("http://localhost:3000/");
-
+var socket = io.connect();
+socket.emit("new-user", {
+  name: currentUser.username,
+  id: socket.id,
+  userId: currentUser._id
+});
 function add() {
-  socket.on("connect", () => {
-    socket.emit("new-user", {
-      name: currentUser.username,
-      id: socket,
-      userId: currentUser._id
-    });
-    socket.on("message", data => {
-      console.log(data);
-      appendMessage(data.message, false);
-    });
+  socket.on("message", data => {
+    console.log(data);
+    appendMessage(data.message, false);
   });
-
   var sender, reciever;
   if (currentUser) {
     {

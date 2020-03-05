@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
 var Message = require("../models/message");
-var middleware = require('../middleware/index')
+var middleware = require("../middleware/index");
 /* GET home page. */
 router.get("/user/:id/chat", function(req, res, next) {
   User.findById(req.params.id)
@@ -20,8 +20,16 @@ router.get("/user", middleware.isAdmin, (req, res) => {
     if (err) {
       console.log("No camps found in database");
     } else {
-      console.log("successssss");
       res.render("user/index", { users: campgrounds });
+    }
+  });
+});
+router.get("/user/:id", middleware.isAdmin, (req, res) => {
+  User.findById(req.params.id, function(err, user) {
+    if (err) {
+      console.log("User not found");
+    } else {
+      res.render("admin/showUser", { user: user });
     }
   });
 });

@@ -1,22 +1,15 @@
 var socket = io("http://localhost:3000/");
 var currentUser;
-
-function add() {
-  if (!currentUser) {
-    // location.reload();
-  } else {
-    socket.on("connect", () => {
-      socket.emit("new-user", {
+socket.emit("new-user", {
         name: currentUser.username,
-        id: socket,
+        id: socket.id,
         userId: currentUser._id
       });
-      socket.on("message", data => {
-        console.log(data);
-        appendMessage(data.message, false);
-      });
-    });
-  }
+function add() {
+  socket.on("message", data => {
+    console.log(data);
+    appendMessage(data.message, false);
+  });
   var sender, reciever;
   if (currentUser) {
     if (currentUser.isAdmin) {
@@ -61,6 +54,8 @@ function appendMessage(message, me) {
 
   newMessage.append(messageContent);
   newMessage.append(time);
+
+  document.getElementById("messages").append(newMessage);
 
   // document.getElementById("messages").append(newMessage);
   // $("#messages").animate(

@@ -1,16 +1,30 @@
 const mongoose = require("mongoose");
 
 var projectSchema = new mongoose.Schema({
-  sender: String,
   dated: {
     type: Date,
     default: Date.now()
   },
   price: Number,
-  employee: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user"
+  employee:
+  {
+    username: String,
+    image: String,
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user"
+    }
   }
+  ,
+  files: [String],
+  dueDate: Date,
+  title: String,
+  description: String,
+  status: {
+    type: String,
+    default: "ongoing"
+  },
+  completionDate: Date
 });
 
 module.exports = mongoose.model("project", projectSchema);

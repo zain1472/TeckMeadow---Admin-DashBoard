@@ -28,26 +28,35 @@ router.post("/register", upload.single("photo"), (req, res) => {
     if (err) {
       console.log(err);
       req.flash("error", err.message);
-      return res.redirect("/register");
+      return res.redirect("/user/register");
     } else {
       passport.authenticate("local")(req, res, function() {
-        // req.flash("success", "Successfully registered your new account");
+        req.flash("success", "Successfully registered your new account");
         res.redirect("/");
       });
     }
   });
 });
-router.get("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
+router.post("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
+  var isAdmin = false;
+  if (req.body.isAdmin == "true") {
+    isAdmin = true;
+  }
+  var user = {
+    isAdmin: isAdmin
+  };
   User.findById(req.params.id, function(err, newUser) {
     if (err) {
       console.log(err);
       req.flash("error", err.message);
-      return res.redirect("/edit");
+      return res.redirect("/admin/user/" + req.params.id);
     } else {
-      newUser.isAdmin = true;
+      newUser.isAdmin = isAdmin;
+      console.log(isAdmin);
       newUser.save();
+      req.flash("error", "New changes have been saved successfully");
+      res.redirect("/admin/user/" + req.params.id);
       console.log(newUser);
-      res.redirect("/");
     }
   });
 });

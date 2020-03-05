@@ -12,6 +12,17 @@ module.exports = {
   //     res.redirect("back");
   //   }
   // },
+  isUser: function(req, res, next) {
+    if (req.isAuthenticated()) {
+      if (req.user.isAdmin) {
+        res.redirect("/admin/user");
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  },
   isLoggedIn: function(req, res, next) {
     if (req.isAuthenticated()) {
       return next();
@@ -48,8 +59,6 @@ module.exports = {
   },
   isAdmin: function(req, res, next) {
     if (req.isAuthenticated()) {
-      console.log("current user");
-      console.log(req.user);
       if (req.user.isAdmin == true) {
         return next();
       } else {

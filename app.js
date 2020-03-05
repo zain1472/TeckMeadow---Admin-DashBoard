@@ -12,7 +12,9 @@ var methodOverride = require("method-override");
 var middleware = require("./middleware/index");
 var userRoutes = require("./routes/users");
 var adminRoutes = require("./routes/adminRoutes");
+var projectRoutes = require("./routes/projectRoutes");
 var Message = require("./models/message");
+
 var users = [];
 
 mongoose.connect(
@@ -42,18 +44,18 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.set("view engine", "ejs");
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.message = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
   next();
 });
 
-app.get("/", middleware.isLoggedIn, function(req, res) {
+app.get("/", middleware.isLoggedIn, middleware.isUser, function (req, res) {
   // console.log(req.user);
   User.findById(req.user._id)
     .populate("messages")
-    .exec(function(err, messages) {
+    .exec(function (err, messages) {
       if (err) {
         console.log(err);
       } else {
@@ -68,12 +70,11 @@ app.use(require("express").static("public"));
 
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
-
-io.on("connection", function(socket) {
+app.use("/admin/project", projectRoutes);
+io.on("connection", function (socket) {
   socket.on("new-user", data => {
-    console.log(data);
     socket.userId = data.userId;
-    User.findById(data.userId, function(err, user) {
+    User.findById(data.userId, function (err, user) {
       if (err) {
         console.log(err);
       } else {
@@ -81,8 +82,7 @@ io.on("connection", function(socket) {
         user.save();
       }
     });
-    users[data.name] = { socket: data.id };
-    console.log(users);
+    users[data.name] = { socket: socket.id };
   });
   socket.on("message", data => {
     // store in database and then parse if online
@@ -92,11 +92,11 @@ io.on("connection", function(socket) {
         reciever: data.reciever,
         message: data.message
       },
-      function(err, message) {
+      function (err, message) {
         if (err) {
           console.log(err);
         } else {
-          User.findById(data.id, function(err, user) {
+          User.findById(data.id, function (err, user) {
             if (err) {
               console.log(err);
             } else {
@@ -108,13 +108,16 @@ io.on("connection", function(socket) {
       }
     );
 
-    console.log(data);
-    if (io.sockets.connected[users[data.reciever].socket]) {
-      io.sockets.connected[users[data.reciever].socket].emit("message", data);
+    if (users[data.reciever]) {
+      if (io.sockets.connected[users[data.reciever].socket]) {
+        console.log(data);
+
+        io.sockets.connected[users[data.reciever].socket].emit("message", data);
+      }
     }
   });
-  socket.on("disconnect", function() {
-    User.findById(socket.userId, function(err, user) {
+  socket.on("disconnect", function () {
+    User.findById(socket.userId, function (err, user) {
       if (err) {
         console.log(err);
       } else {
@@ -127,6 +130,7 @@ io.on("connection", function(socket) {
     });
   });
 });
-http.listen(3000, function() {
+
+http.listen(3000, function () {
   console.log("listening on *:3000");
 });
