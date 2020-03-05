@@ -25,7 +25,6 @@ router.get("/status/:status", middleware.isAdmin, (req, res) => {
         res.redirect("/admin/user");
         console.log(err);
       } else {
-        console.log(projects);
         res.render("project/admin/" + status, { projects: projects });
       }
     });
@@ -66,7 +65,10 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
   var name = req.body.employee;
   var files = [];
   for (let index = 0; index < req.files.length; index++) {
-    const element = req.files[index].filename;
+    const element = {
+      filename: req.files[index].originalname,
+      path: req.files[index].filename
+    };
     files.push(element);
   }
   User.findById(name, function(err, user) {
@@ -98,7 +100,38 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
 });
 
 // ----------
-// Delete ROute
+// Show project Detail
 //
-
+router.get("/:id", middleware.isAdmin, (req, res) => {
+  Project.findById(req.params.id, function(err, project) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("project/admin/show", { project: project });
+    }
+  });
+});
+// add files
+router.post(
+  "/:id/addfile",
+  middleware.isAdmin,
+  upload.array("files", 5),
+  (req, res) => {
+    Project.findById(req.params.id, function(err, project) {
+      if (err) {
+        console.log(err);
+      } else {
+        for (let index = 0; index < req.files.length; index++) {
+          const element = {
+            filename: req.files[index].originalname,
+            path: req.files[index].filename
+          };
+          project.files.push(element);
+        }
+        project.save();
+        return res.redirect("/admin/project/" + project._id);
+      }
+    });
+  }
+);
 module.exports = router;

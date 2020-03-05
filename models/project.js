@@ -6,17 +6,20 @@ var projectSchema = new mongoose.Schema({
     default: Date.now()
   },
   price: Number,
-  employee:
-  {
+  employee: {
     username: String,
     image: String,
     id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user"
     }
-  }
-  ,
-  files: [String],
+  },
+  files: [
+    {
+      filename: String,
+      path: String
+    }
+  ],
   dueDate: Date,
   title: String,
   description: String,
