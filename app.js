@@ -13,6 +13,7 @@ var middleware = require("./middleware/index");
 var userRoutes = require("./routes/users");
 var adminRoutes = require("./routes/adminRoutes");
 var projectRoutes = require("./routes/projectRoutes");
+var fileRoutes = require("./routes/fileRoutes");
 var Message = require("./models/message");
 
 var users = [];
@@ -44,18 +45,18 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.set("view engine", "ejs");
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.locals.message = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = req.user;
   next();
 });
 
-app.get("/", middleware.isLoggedIn, middleware.isUser, function (req, res) {
+app.get("/", middleware.isLoggedIn, middleware.isUser, function(req, res) {
   // console.log(req.user);
   User.findById(req.user._id)
     .populate("messages")
-    .exec(function (err, messages) {
+    .exec(function(err, messages) {
       if (err) {
         console.log(err);
       } else {
@@ -71,10 +72,11 @@ app.use(require("express").static("public"));
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/project", projectRoutes);
-io.on("connection", function (socket) {
+app.use("/file", fileRoutes);
+io.on("connection", function(socket) {
   socket.on("new-user", data => {
     socket.userId = data.userId;
-    User.findById(data.userId, function (err, user) {
+    User.findById(data.userId, function(err, user) {
       if (err) {
         console.log(err);
       } else {
@@ -92,11 +94,11 @@ io.on("connection", function (socket) {
         reciever: data.reciever,
         message: data.message
       },
-      function (err, message) {
+      function(err, message) {
         if (err) {
           console.log(err);
         } else {
-          User.findById(data.id, function (err, user) {
+          User.findById(data.id, function(err, user) {
             if (err) {
               console.log(err);
             } else {
@@ -116,8 +118,8 @@ io.on("connection", function (socket) {
       }
     }
   });
-  socket.on("disconnect", function () {
-    User.findById(socket.userId, function (err, user) {
+  socket.on("disconnect", function() {
+    User.findById(socket.userId, function(err, user) {
       if (err) {
         console.log(err);
       } else {
@@ -131,6 +133,6 @@ io.on("connection", function (socket) {
   });
 });
 
-http.listen(3000, function () {
+http.listen(3000, function() {
   console.log("listening on *:3000");
 });
