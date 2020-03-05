@@ -18,6 +18,13 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
       rel="stylesheet"
     />
+    <script>
+      <%if(error && error.length>0){%>
+             var error = " <%=error%>";
+            <%}%> <%if(message && message.length>0){%>
+              var message = " <%=message%>";
+            <%}%>
+    </script>
   </head>
   <body class="boxed-layout">
     <!-- begin::preloader-->

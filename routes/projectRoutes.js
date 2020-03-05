@@ -3,6 +3,8 @@ var middleware = require("../middleware/index");
 var User = require("../models/user");
 var Project = require("../models/project");
 var upload = require("../upload");
+var fs = require("fs");
+var path = require("path");
 router.get("/", middleware.isAdmin, (req, res) => {
   Project.find({})
     .populate("Users")
@@ -38,6 +40,14 @@ router.get("/:id/:status", middleware.isAdmin, (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        if (project) {
+          for (let index = 0; index < project.files.length; index++) {
+            const element = project.files[index];
+            fs.unlinkSync(
+              path.join(__dirname, "../public/uploads/", element.path)
+            );
+          }
+        }
         req.flash("success", "successfully deleted the project");
         res.redirect("/admin/project/");
       }
@@ -53,9 +63,15 @@ router.get("/:id/:status", middleware.isAdmin, (req, res) => {
           console.log(projects);
           projects.status = status;
           if (status == "completed") {
+            req.flash("success", "The payment has been marked as completed");
             projects.completionDate = Date.now();
+          } else if (status == "awaitingPayment") {
+            req.flash("success", "The project is now awaiting payment");
+          } else if (status == "cancelled") {
+            req.flash("success", "The project has been cancelled successfully");
           }
           projects.save();
+
           res.redirect("/admin/project/status/" + status);
         }
       });
@@ -129,6 +145,7 @@ router.post(
           project.files.push(element);
         }
         project.save();
+        req.flash("success", "The files have been added successfully");
         return res.redirect("/admin/project/" + project._id);
       }
     });
