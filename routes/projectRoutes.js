@@ -8,7 +8,7 @@ var path = require("path");
 router.get("/", middleware.isAdmin, (req, res) => {
   Project.find({})
     .populate("Users")
-    .exec(function(err, projects) {
+    .exec(function (err, projects) {
       if (err) {
         res.redirect("/admin/user");
         console.log(err);
@@ -22,7 +22,7 @@ router.get("/status/:status", middleware.isAdmin, (req, res) => {
   var status = req.params.status;
   Project.find({})
     .populate("Users")
-    .exec(function(err, projects) {
+    .exec(function (err, projects) {
       if (err) {
         res.redirect("/admin/user");
         console.log(err);
@@ -31,12 +31,42 @@ router.get("/status/:status", middleware.isAdmin, (req, res) => {
       }
     });
 });
+
+// get form to edit project
+router.get("/:id/edit", middleware.isAdmin, (req, res) => {
+  Project.findById(req.params.id, function (err, project) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(project);
+      console.log(project.dueDate.toDateString());
+      res.render("project/admin/edit", { project: project });
+    }
+  });
+});
+router.post("/:id/edit", middleware.isAdmin, (req, res) => {
+  var newProject = {
+    title: req.body.title,
+    description: req.body.description,
+    dueDate: req.body.dueDate,
+    price: req.body.price
+  }
+  Project.findByIdAndUpdate(req.params.id, newProject, function (err, project) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(req.body);
+      req.flash("success", "Applied the changes to the project successfully")
+      res.redirect("/admin/project/" + req.params.id);
+    }
+  });
+});
 // change project status
 router.get("/:id/:status", middleware.isAdmin, (req, res) => {
   var status = req.params.status;
   var id = req.params.id;
   if (status == "delete") {
-    Project.findByIdAndDelete(id, function(err, project) {
+    Project.findByIdAndDelete(id, function (err, project) {
       if (err) {
         console.log(err);
       } else {
@@ -55,12 +85,12 @@ router.get("/:id/:status", middleware.isAdmin, (req, res) => {
   } else {
     Project.findById(id)
       .populate("Users")
-      .exec(function(err, projects) {
+      .exec(function (err, projects) {
         if (err) {
           res.redirect("/admin/user");
           console.log(err);
         } else {
-          console.log(projects);
+
           projects.status = status;
           if (status == "completed") {
             req.flash("success", "The payment has been marked as completed");
@@ -87,7 +117,7 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
     };
     files.push(element);
   }
-  User.findById(name, function(err, user) {
+  User.findById(name, function (err, user) {
     if (err) {
       console.log(err);
     } else {
@@ -104,7 +134,7 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
           title: req.body.title,
           files: files
         },
-        function(err, project) {
+        function (err, project) {
           user.projects.push(project);
           user.save();
           req.flash("success", "Successfully created a new Project");
@@ -119,7 +149,7 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
 // Show project Detail
 //
 router.get("/:id", middleware.isAdmin, (req, res) => {
-  Project.findById(req.params.id, function(err, project) {
+  Project.findById(req.params.id, function (err, project) {
     if (err) {
       console.log(err);
     } else {
@@ -127,13 +157,14 @@ router.get("/:id", middleware.isAdmin, (req, res) => {
     }
   });
 });
+
 // add files
 router.post(
   "/:id/addfile",
   middleware.isAdmin,
   upload.array("files", 5),
   (req, res) => {
-    Project.findById(req.params.id, function(err, project) {
+    Project.findById(req.params.id, function (err, project) {
       if (err) {
         console.log(err);
       } else {

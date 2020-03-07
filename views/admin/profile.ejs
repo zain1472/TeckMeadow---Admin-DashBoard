@@ -12,6 +12,13 @@
 
   <!-- App styles -->
   <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
+  <script>
+    <%if (error && error.length > 0) {%>
+           var error = " <%=error%>";
+          <%}%> <%if (message && message.length > 0) {%>
+            var message = " <%=message%>";
+          <%}%>
+  </script>
 </head>
 
 <body class="boxed-layout">
@@ -200,10 +207,10 @@
                   <i class="mr-2" data-feather="users"></i> User
                 </li>
                 <li>
-                  <a href="/admin/profile">Profile</a>
+                  <a href="/admin/profile" class="active">Profile</a>
                 </li>
                 <li>
-                  <a href="/admin/user" class="active">User List</a>
+                  <a href="/admin/user">User List</a>
                 </li>
 
               </ul>
@@ -223,12 +230,12 @@
                     <img src="/assets/media/image/image1.jpg" class="card-img-top" alt="..." />
                     <div class="card-body text-center m-t-70-minus">
                       <figure class="avatar avatar-xl m-b-20">
-                        <img src="/uploads/<%=user.image%>" class="rounded-circle" alt="..." />
+                        <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="..." />
                       </figure>
                       <h5>
-                        <%=user.firstname%>&nbsp;<%=user.lastname%>
+                        <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
                       </h5>
-                      <p class="text-muted"><%=user.country%></p>
+                      <p class="text-muted"><%=currentUser.country%></p>
 
 
                     </div>
@@ -236,8 +243,8 @@
                     <div class="card-body">
                       <div class="row text-center">
                         <div class="col-12 text-success">
-                          <h4 class="font-weight-bold"><%=user.projects.length%></h4>
-                          <span>Total Projects</span>
+                          <h4 class="font-weight-bold"><%=projects.length%></h4>
+                          <span>Total Payments</span>
                         </div>
 
                       </div>
@@ -253,12 +260,7 @@
                             aria-selected="true">Permissions</a>
                         </li>
 
-                        <li class="flex-sm-fill text-sm-center nav-item">
-                          <a class="nav-link" id="connections-tab1" data-toggle="tab" href="#connections" role="tab"
-                            aria-selected="false">
-                            Assign Project
-                          </a>
-                        </li>
+
                         <li class="flex-sm-fill text-sm-center nav-item">
                           <a class="nav-link" id="earnings-tab" data-toggle="tab" href="#earnings" role="tab"
                             aria-selected="false">Earnings</a>
@@ -272,14 +274,14 @@
                       <div class="card">
                         <div class="card-body">
                           <h6 class="card-title">Permissions</h6>
-                          <form action="/user/<%=user._id%>/makeAdmin" method="POST">
+                          <form action="/admin/profile/" method="POST">
                             <div class="d-flex mb-3">
                               <figure class="mr-3">
-                                <img width="100" class="rounded" src="/uploads/<%=user.image%>" alt="..." />
+                                <img width="100" class="rounded" src="/uploads/<%=currentUser.image%>" alt="..." />
                               </figure>
                               <div>
                                 <p>
-                                  <%=user.firstname%>&nbsp;<%=user.lastname%>
+                                  <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
                                 </p>
                               </div>
                             </div>
@@ -287,35 +289,35 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Firstname</label>
-                                  <input type="text" class="form-control" value="<%=user.firstname%>" name="firstname"
-                                    required readonly />
+                                  <input type="text" class="form-control" value="<%=currentUser.firstname%>"
+                                    name="firstname" required />
                                 </div>
                                 <div class="form-group">
                                   <label>Username
                                     <span class="text-muted">(Can't Change)</span></label>
-                                  <input type="text" class="form-control" value="<%=user.username%>" name="username"
-                                    readonly />
+                                  <input type="text" class="form-control" value="<%=currentUser.username%>"
+                                    name="username" readonly />
                                 </div>
                                 <div class="form-group">
                                   <label>Country</label>
-                                  <input type="text" class="form-control" value="<%=user.country%>" name="country"
-                                    required readonly />
+                                  <input type="text" class="form-control" value="<%=currentUser.country%>"
+                                    name="country" required />
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Lastname</label>
-                                  <input type="text" class="form-control" value="<%=user.lastname%>" name="lastname"
-                                    readonly />
+                                  <input type="text" class="form-control" value="<%=currentUser.lastname%>"
+                                    name="lastname" />
                                 </div>
                                 <div class="form-group">
                                   <label>Role</label>
-                                  <select class="form-control" name="isAdmin">
-                                    <option value="true" <%if(user.isAdmin){%> selected <%}%> >Admin</option
+                                  <select class="form-control" name="isAdmin" disabled>
+                                    <option value="true" <%if(currentUser.isAdmin){%> selected <%}%> readonly>Admin</option
                                       >
                                       <option
                                         value="false"
-                                        <%if(!(user.isAdmin)){%> selected <%}%>
+                                        <%if(!(currentUser.isAdmin)){%> selected <%}%>
                                         >
                                         Employee
                                       </option>
@@ -332,51 +334,7 @@
                       </div>
                     </div>
 
-                    <div class="tab-pane fade" id="connections" role="tabpanel">
-                      <div class="card">
-                        <div class="card-body">
-                          <form enctype="multipart/form-data" action="/admin/project/" method="POST">
-                            <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Project title" name="title" required
-                                autofocus />
-                            </div>
-                            <div class="form-group">
-                              <textarea rows="2" name="description" class="form-control"
-                                placeholder="Project Description" name="description"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="files" required
-                                  multiple />
-                                <label class="custom-file-label" for="customFile">Upload Files</label>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <input type="date" class="form-control" placeholder="Project title" name="dueDate"
-                                required />
-                            </div>
-                            <div class="form-group">
-                              <input type="text" class="form-control" placeholder="" name="employee"
-                                value="<%=user._id%>" required readonly />
-                                </div>
-                                <div class="form-group">
-                                  <input type="number" class="form-control" placeholder="price of project" name="price"
-                                    required />
-                                </div>
-
-                                <div class="text-right">
-                                  <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                      <button class="btn btn-primary">
-                                        Submit
-                                      </button>
-                                    </li>
-                                  </ul>
-                                </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
+                    
                     <div class="tab-pane fade" id="earnings" role="tabpanel">
                       <div class="card">
                         <div class="card-body">
@@ -392,64 +350,63 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <%var total=0;for(var i = user.projects.length-1;i>=0;i--){var project = user.projects[i];%>
-                              <%if(project.status=="completed"){total+=project.price;%>
-                              <tr>
-                                <td><a href="/admin/project/<%=project._id%>"><%=project.title%></a></td>
-                                <td class="text-success">
-                                  <%=project.completionDate.toDateString();%>
-                                </td>
-                                <td class="text-secondary"><%=project.price%> Rs/-</td>
-                              </tr>
-                              <%}%>
+                              <%var total=0;for(var i = projects.length-1;i>=0;i--){var project = projects[i];%>
+                                      <%if(project.status=="completed"){total+=project.price;%> <tr>
+                                      <td><a href="/admin/project/<%=project._id%>"><%=project.title%></a></td>
+                                      <td class="text-success">
+                                        <%=project.completionDate.toDateString();%>
+                                      </td>
+                                      <td class="text-secondary"><%=project.price%> Rs/-</td>
+                                      </tr>
+                                      <%}%>
                               <%}%>
 
-                            </tbody>
-                            <tfoot>
-                              <tr>
-                                <th></th>
-                                <th>Total Earnings</th>
-                                <th>
-                                  <%=total%>
-                                </th>
-                              </tr>
-                            </tfoot>
-                          </table>
+                                      </tbody>
+                                      <tfoot>
+                                        <tr>
+                                          <th></th>
+                                          <th>Total Earnings</th>
+                                          <th>
+                                            <%=total%>
+                                          </th>
+                                        </tr>
+                                      </tfoot>
+                                      </table>
+                                </div>
+                              </div>
+                            </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <!-- begin::footer -->
+              <footer class="content-footer">
+                <div>
+                  © 2020 Nago -
+                  <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
+                </div>
+                <div>
+                  <nav class="nav">
+                    <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
+                    <a href="#" class="nav-link">Change Log</a>
+                    <a href="#" class="nav-link">Get Help</a>
+                  </nav>
+                </div>
+              </footer>
+              <!-- end::footer -->
             </div>
           </div>
         </div>
+        <!-- end::main -->
 
-        <!-- begin::footer -->
-        <footer class="content-footer">
-          <div>
-            © 2020 Nago -
-            <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
-          </div>
-          <div>
-            <nav class="nav">
-              <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
-              <a href="#" class="nav-link">Change Log</a>
-              <a href="#" class="nav-link">Get Help</a>
-            </nav>
-          </div>
-        </footer>
-        <!-- end::footer -->
-      </div>
-    </div>
-  </div>
-  <!-- end::main -->
+        <!-- Plugin scripts -->
+        <script src="../../vendors/bundle.js"></script>
 
-  <!-- Plugin scripts -->
-  <script src="../../vendors/bundle.js"></script>
-
-  <!-- App scripts -->
-  <script src="../../assets/js/app.min.js"></script>
+        <!-- App scripts -->
+        <script src="../../assets/js/app.min.js"></script>
 </body>
 
 <!-- Mirrored from nago.laborasyon.com/demos/layouts/boxed-layout/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2020 21:51:46 GMT -->

@@ -1,27 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>TeckMeadow</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
 
   <!-- Plugin styles -->
-  <link rel="stylesheet" href="/vendors/bundle.css" type="text/css">
+  <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
 
   <!-- Datatable -->
-  <link rel="stylesheet" href="/vendors/dataTable/dataTables.min.html" type="text/css">
+  <link rel="stylesheet" href="/vendors/dataTable/datatables.min.css" type="text/css" />
 
   <!-- App styles -->
-  <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css">
+  <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
   <script>
-    <%if (error && error.length > 0) {%>
-           var error = " <%=error%>";
-          <%}%> <%if (message && message.length > 0) {%>
-            var message = " <%=message%>";
-          <%}%>
+      <%if (error && error.length > 0) {%>
+             var error = " <%=error%>";
+            <%}%> <%if (message && message.length > 0) {%>
+              var message = " <%=message%>";
+            <%}%>
+      
+        
+    <%var day = project.dueDate.getDate() %>
+    <%var month = project.dueDate.getMonth() + 1 %>
+    <%var year = project.dueDate.getFullYear() %>
+
+    <%if (day < 10) {%>
+      <% day = '0' + day.toString();%>
+      <%}%>
+
+      <% if (month < 10) {%>
+        <% month = '0' + month.toString();%>
+        <%}%>
+    <% year = year.toString();%>
+
+
+
+
+
+
   </script>
 </head>
 
@@ -173,7 +196,7 @@
                   <i class="mr-2" data-feather="briefcase"></i> Projects
                 </li>
                 <li>
-                  <a href="/admin/project/" class="">All Projects</a>
+                  <a href="/admin/project/" class="active">All Projects</a>
                 </li>
                 <li>
                   <a href="/admin/project/status/completed">Completed Projects</a>
@@ -214,7 +237,7 @@
                   <a href="/admin/profile">Profile</a>
                 </li>
                 <li>
-                  <a href="/admin/user" class="active">User List</a>
+                  <a href="/admin/user" class="">User List</a>
                 </li>
 
               </ul>
@@ -222,107 +245,98 @@
           </div>
         </div>
       </div>
+
       <!-- end::navigation -->
 
       <div class="content-body">
-
         <div class="content">
+          <%if(error && error.length>0){%>
+          <div class="text-center alert alert-danger" role="alert">
+            <%=error%>
+          </div>
+          <%}%> <%if(message && message.length>0){%>
+          <div class="text-center alert alert-success" role="alert">
+            <%=message%>
+          </div>
+          <%}%>
 
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title">Edit Project</h6>
 
-
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table id="user-list" class="table table-lg">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Username</th>
-                          <th>Country</th>
-                          <th>Role</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <%var i=1;%>
-                        <%users.forEach(user=>{%>
-                        <tr>
-                          <td></td>
-                          <td><%=i++%></td>
-                          <td>
-                            <a href="/admin/user/<%=user._id%>">
-                              <figure class="avatar avatar-sm mr-2">
-                                <img src="/uploads/<%=user.image%>" class="rounded-circle" alt="avatar">
-                              </figure>
-                              <%=user.firstname%>&nbsp<%=user.lastname%>
-                            </a>
-                          </td>
-                          <td><%=user.username%></td>
-                          <td><%=user.country%></td>
-
-                          <td>
-                            <%if(user.isAdmin){%>
-                            <span class="badge bg-success-bright text-success">Admin</span>
-                            <%}else{%>
-                            <span class="badge bg-info-bright text-info">Employee</span>
-                            <%}%>
-                                </td>
-                                <td>
-                                    <a href="/admin/user/<%=user._id%>/chat" class="text-secondary"
-                            data-toggle="tooltip"
-                            title="Chat">
-                            <i class="far fa-comment"></i>
-                            </a>
-                            <a href="/user/<%=user._id%>/delete%>" class="text-danger ml-2" data-toggle="tooltip"
-                              title="Delete">
-                              <i class="fas fa-trash"></i>
-                            </a>
-                          </td>
-                        </tr>
-                        <%})%>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    <div>
+                      <form
+                        action="/admin/project/<%=project._id%>/edit"
+          method="POST"
+          >
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Project title" name="title" value="<%=project.title%>"
+              required autofocus />
+          </div>
+          <div class="form-group">
+            <textarea rows="2" name="description" class="form-control" placeholder="Project Description"
+              name="description"><%=project.description%></textarea>
           </div>
 
+          <div class="form-group">
+            <input type="date" class="form-control" placeholder="Project title" name="dueDate" id="date"
+              value="<%=year + '-' + month + '-' + day%>" required />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="" name="employee" value="<%=project.employee.id%>"
+              required readonly />
+          </div>
+          <div class="form-group">
+            <input type="number" class="form-control" placeholder="price of project" name="price"
+              value="<%=project.price%>" required />
+          </div>
 
+          <div class="text-right">
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <button class="btn btn-primary">
+                  Submit
+                </button>
+              </li>
+            </ul>
+          </div>
+          </form>
         </div>
-
-        <!-- begin::footer -->
-        <footer class="content-footer">
-          <div>© 2020 TeckMeadow - Dashboard</a></div>
-
-        </footer>
-        <!-- end::footer -->
-
       </div>
-
     </div>
+  </div>
+  </div>
+  </div>
 
+  <!-- begin::footer -->
+  <footer class="content-footer">
+    <div>
+      © 2020 Nago -
+      <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
+    </div>
+    <div>
+      <nav class="nav">
+        <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
+        <a href="#" class="nav-link">Change Log</a>
+        <a href="#" class="nav-link">Get Help</a>
+      </nav>
+    </div>
+  </footer>
+  <!-- end::footer -->
+  </div>
+  </div>
   </div>
   <!-- end::main -->
 
   <!-- Plugin scripts -->
-  <script src="../../vendors/bundle.js"></script>
+  <script src="/vendors/bundle.js"></script>
 
   <!-- Datatable -->
-  <script src="../../vendors/dataTable/dataTables.min-2.html"></script>
-
-  <script src="../../assets/js/examples/pages/user-list.js"></script>
 
   <!-- App scripts -->
-  <script src="../../assets/js/app.min.js"></script>
-
+  <script src="/assets/js/app.min.js"></script>
 </body>
-
-<!-- Mirrored from nago.laborasyon.com/demos/layouts/boxed-layout/user-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2020 21:52:48 GMT -->
 
 </html>

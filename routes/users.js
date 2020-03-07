@@ -4,10 +4,12 @@ var User = require("../models/user");
 var passport = require("passport");
 var middleware = require("../middleware/index");
 var upload = require("../upload");
-router.get("/login", function(req, res, next) {
+var fs = require('fs');
+var path = require('path');
+router.get("/login", function (req, res, next) {
   res.render("user/login");
 });
-router.get("/register", function(req, res, next) {
+router.get("/register", function (req, res, next) {
   res.render("user/register");
 });
 // =============//
@@ -24,13 +26,13 @@ router.post("/register", upload.single("photo"), (req, res) => {
     image: req.file.filename,
     country: req.body.country
   });
-  User.register(newUser, req.body.password, function(err) {
+  User.register(newUser, req.body.password, function (err) {
     if (err) {
       console.log(err);
       req.flash("error", err.message);
       return res.redirect("/user/register");
     } else {
-      passport.authenticate("local")(req, res, function() {
+      passport.authenticate("local")(req, res, function () {
         req.flash("success", "Successfully registered your new account");
         res.redirect("/");
       });
@@ -45,7 +47,7 @@ router.post("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
   var user = {
     isAdmin: isAdmin
   };
-  User.findById(req.params.id, function(err, newUser) {
+  User.findById(req.params.id, function (err, newUser) {
     if (err) {
       console.log(err);
       req.flash("error", err.message);
@@ -66,7 +68,7 @@ router.post(
     successRedirect: "/",
     failureRedirect: "/user/login"
   }),
-  (req, res) => {}
+  (req, res) => { }
 );
 router.get("/logout", (req, res) => {
   req.logOut();
@@ -77,7 +79,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var id = req.params.id;
   User.findById(id)
     .populate("messages")
-    .exec(function(err, user) {
+    .exec(function (err, user) {
       if (err) {
         console.log("No such user found in database");
       } else {
@@ -109,7 +111,7 @@ router.post(
       country: req.body.country,
       gender: req.body.gender
     };
-    User.findByIdAndUpdate(req.user._id, newUser, function(err, user) {
+    User.findByIdAndUpdate(req.user._id, newUser, function (err, user) {
       if (err) {
         console.log(err);
       } else {
@@ -121,4 +123,16 @@ router.post(
 router.get("/changePassword", (req, res, next) => {
   res.render("/user/changePassword");
 });
+router.get("/:id/delete", middleware.isAdmin, (req, res) => {
+  User.findByIdAndDelete(req.params.id).populate('projects').exec(function (err, user) {
+    if (err) {
+      console.log(err);
+      res.redirect('/');
+    } else {
+      req.flash("success", "Successfully deleted the user");
+      res.redirect('/admin/user');
+      fs.unlinkSync(path.join(__dirname, "../public/uploads/", user.image));
+    }
+  })
+})
 module.exports = router;

@@ -1,572 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Nago - Admin & Dashboard HTML Template</title>
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>TeckMeadow</title>
 
-    <!-- Plugin styles -->
-    <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
 
-    <!-- Datatable -->
-    <link
-      rel="stylesheet"
-      href="/vendors/dataTable/datatables.min.css"
-      type="text/css"
-    />
+  <!-- Plugin styles -->
+  <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
 
-    <!-- App styles -->
-    <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
-      rel="stylesheet"
-    />
-    <script>
-      <%if(error && error.length>0){%>
+  <!-- Datatable -->
+  <link rel="stylesheet" href="/vendors/dataTable/datatables.min.css" type="text/css" />
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+  <script>
+      <%if (error && error.length > 0) {%>
              var error = " <%=error%>";
-            <%}%> <%if(message && message.length>0){%>
+            <%}%> <%if (message && message.length > 0) {%>
               var message = " <%=message%>";
             <%}%>
-    </script>
-  </head>
+  </script>
+</head>
 
-  <body class="boxed-layout">
-    <!-- begin::preloader-->
-    <div class="preloader">
-      <div class="preloader-icon"></div>
-    </div>
-    <!-- end::preloader -->
+<body class="boxed-layout">
+  <!-- begin::preloader-->
+  <div class="preloader">
+    <div class="preloader-icon"></div>
+  </div>
+  <!-- end::preloader -->
 
-    <!-- BEGIN: Sidebar Group -->
-    <div class="sidebar-group">
-      <!-- BEGIN: User Menu -->
-      <div class="sidebar" id="user-menu">
-        <div
-          class="py-4 text-center"
-          data-backround-image="/assets/media/image/image1.jpg"
-        >
-          <figure class="avatar avatar-lg mb-3 border-0">
-            <img
-              src="/assets/media/image/user/women_avatar1.jpg"
-              class="rounded-circle"
-              alt="image"
-            />
-          </figure>
-          <h5 class="d-flex align-items-center justify-content-center">
-            Roxana Roussell
-          </h5>
-          <div>Balance: <strong>$500</strong></div>
+  <!-- BEGIN: Sidebar Group -->
+  <div class="sidebar-group">
+    <!-- BEGIN: User Menu -->
+    <div class="sidebar" id="user-menu">
+      <div class="py-4 text-center" data-backround-image="/assets/media/image/image1.jpg">
+        <figure class="avatar avatar-lg mb-3 border-0">
+          <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="image" />
+        </figure>
+        <h5 class="d-flex align-items-center justify-content-center">
+          <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
+        </h5>
+        <div> <strong><%=currentUser.country%></strong></div>
+      </div>
+      <div class="card mb-0 card-body shadow-none">
+        <div class="mb-4">
+          <div class="list-group list-group-flush">
+            <a href="/admin/profile" class="list-group-item p-l-r-0">Profile</a>
+            <a href="/user/logout" class="list-group-item p-l-r-0 text-danger">Log
+              Out!</a>
+          </div>
         </div>
-        <div class="card mb-0 card-body shadow-none">
-          <div class="mb-4">
-            <div class="list-group list-group-flush">
-              <a href="profile.html" class="list-group-item p-l-r-0">Profile</a>
-              <a href="#" class="list-group-item p-l-r-0 d-flex">Followers</a>
-              <a href="mail.html" class="list-group-item p-l-r-0 d-flex">
-                Inbox <span class="badge badge-danger ml-auto">2</span>
+
+      </div>
+    </div>
+    <!-- END: User Menu -->
+
+    <!-- BEGIN: Settings -->
+
+    <!-- END: Settings -->
+  </div>
+  <!-- END: Sidebar Group -->
+
+  <!-- begin::main -->
+  <div class="layout-wrapper">
+    <!-- begin::header -->
+    <div class="header d-print-none">
+      <div class="header-left">
+        <div class="navigation-toggler">
+          <a href="#" data-action="navigation-toggler">
+            <i data-feather="menu"></i>
+          </a>
+        </div>
+        <div class="header-logo">
+          <a href="/">
+            <img class="logo" src="/assets/media/image/logo.png" alt="logo" />
+            <img class="logo-light" src="/assets/media/image/logo-light.png" alt="light logo" />
+          </a>
+        </div>
+      </div>
+
+      <div class="header-body">
+        <div class="header-body-left">
+          <div class="page-title">
+            <h4>Admin Profile</h4>
+          </div>
+        </div>
+        <div class="header-body-right">
+          <ul class="navbar-nav">
+            <!-- begin::header fullscreen -->
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link" title="Fullscreen" data-toggle="fullscreen">
+                <i class="maximize" data-feather="maximize"></i>
+                <i class="minimize" data-feather="minimize"></i>
               </a>
-              <a href="#" class="list-group-item p-l-r-0">Billing</a>
-              <a
-                href="#"
-                class="list-group-item p-l-r-0"
-                data-sidebar-target="#settings"
-                >Settings</a
-              >
-              <a
-                href="login.html"
-                class="list-group-item p-l-r-0 text-danger"
-                data-sidebar-target="#settings"
-                >Sign Out!</a
-              >
-            </div>
-          </div>
-          <div class="mb-4">
-            <h6 class="d-flex justify-content-between">
-              Completed Tasks
-              <span class="float-right">%68</span>
-            </h6>
-            <div class="progress" style="height:5px;">
-              <div
-                class="progress-bar bg-secondary"
-                role="progressbar"
-                style="width: 68%;"
-                aria-valuenow="68"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <h6 class="d-flex justify-content-between">
-              Storage
-              <span>%25</span>
-            </h6>
-            <div class="progress" style="height: 5px;">
-              <div
-                class="progress-bar bg-info"
-                role="progressbar"
-                style="width: 40%;"
-                aria-valuenow="40"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <h6>About</h6>
-            <p class="text-muted mb-0">
-              I love reading, traveling and discovering new things. You need to
-              be happy in life.
-            </p>
-          </div>
-          <div class="mb-4">
-            <h6>City</h6>
-            <p class="text-muted mb-0">Germany / Berlin</p>
-          </div>
-          <div class="mb-4">
-            <h6>Social Links</h6>
-            <ul class="list-inline">
-              <li class="list-inline-item">
-                <a href="#" class="btn btn-sm btn-floating btn-facebook">
-                  <i class="fa fa-facebook"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="btn btn-sm btn-floating btn-twitter">
-                  <i class="fa fa-twitter"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="btn btn-sm btn-floating btn-dribbble">
-                  <i class="fa fa-dribbble"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="btn btn-sm btn-floating btn-whatsapp">
-                  <i class="fa fa-whatsapp"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="btn btn-sm btn-floating btn-linkedin">
-                  <i class="fa fa-linkedin"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
+            </li>
+            <!-- end::header fullscreen -->
+
+            <!-- begin::header search -->
+
+            <!-- end::header search -->
+
+            <!-- begin::apps -->
+
+            <!-- end::apps -->
+
+            <!-- begin::header messages dropdown -->
+
+            <!-- END: Cart -->
+
+            <!-- begin::settings -->
+
+            <!-- end::settings -->
+
+            <!-- begin::user menu -->
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link" title="User menu" data-sidebar-target="#user-menu">
+                <span class="mr-2 d-sm-inline d-none"><%=currentUser.username%></span>
+                <figure class="avatar avatar-sm">
+                  <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="avatar" />
+                </figure>
+              </a>
+            </li>
+            <!-- end::user menu -->
+          </ul>
+
+          <!-- begin::mobile header toggler -->
+          <ul class="navbar-nav d-flex align-items-center">
+            <li class="nav-item header-toggler">
+              <a href="#" class="nav-link">
+                <i data-feather="arrow-down"></i>
+              </a>
+            </li>
+          </ul>
+          <!-- end::mobile header toggler -->
         </div>
       </div>
-      <!-- END: User Menu -->
-
-      <!-- BEGIN: Settings -->
-
-      <!-- END: Settings -->
     </div>
-    <!-- END: Sidebar Group -->
+    <!-- end::header -->
 
-    <!-- begin::main -->
-    <div class="layout-wrapper">
-      <!-- begin::header -->
-      <div class="header d-print-none">
-        <div class="header-left">
-          <div class="navigation-toggler">
-            <a href="#" data-action="navigation-toggler">
-              <i data-feather="menu"></i>
-            </a>
-          </div>
-          <div class="header-logo">
-            <a href="index-2.html">
-              <img class="logo" src="/assets/media/image/logo.png" alt="logo" />
-              <img
-                class="logo-light"
-                src="/assets/media/image/logo-light.png"
-                alt="light logo"
-              />
-            </a>
-          </div>
+    <div class="content-wrapper">
+      <!-- begin::navigation -->
+      <div class="navigation">
+        <div class="navigation-menu-tab">
+          <ul>
+
+            <li>
+              <a href="#" data-toggle="tooltip" data-placement="right" title="Projects" data-nav-target="#projects">
+                <i data-feather="briefcase"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-toggle="tooltip" data-placement="right" title="Apps" data-nav-target="#apps">
+                <i data-feather="globe"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-toggle="tooltip" data-placement="right" title="User" data-nav-target="#user">
+                <i data-feather="users"></i>
+              </a>
+            </li>
+          </ul>
         </div>
+        <div class="navigation-menu-body">
+          <div class="navigation-menu-group">
 
-        <div class="header-body">
-          <div class="header-body-left">
-            <div class="page-title">
-              <h4>Chat</h4>
+            <div id="projects">
+              <ul>
+                <li class="navigation-divider d-flex align-items-center">
+                  <i class="mr-2" data-feather="briefcase"></i> Projects
+                </li>
+                <li>
+                  <a href="/admin/project/" class="">All Projects</a>
+                </li>
+                <li>
+                  <a href="/admin/project/status/completed" class="active">Completed Projects</a>
+                </li>
+                <li>
+                  <a href="/admin/project/status/awaitingPayment">Projects Awaiting Payment</a>
+                </li>
+                <li>
+                  <a href="/admin/project/status/submitted">Projects Submitted by Employees</a>
+                </li>
+                <li>
+                  <a href="/admin/project/status/ongoing">Ongoing Projects</a>
+                </li>
+                <li>
+                  <a href="/admin/project/status/cancelled">Cancelled Project</a>
+                </li>
+              </ul>
             </div>
-          </div>
-          <div class="header-body-right">
-            <ul class="navbar-nav">
-              <!-- begin::header fullscreen -->
-              <li class="nav-item dropdown">
-                <a
-                  href="#"
-                  class="nav-link"
-                  title="Fullscreen"
-                  data-toggle="fullscreen"
-                >
-                  <i class="maximize" data-feather="maximize"></i>
-                  <i class="minimize" data-feather="minimize"></i>
-                </a>
-              </li>
-              <!-- end::header fullscreen -->
+            <div id="apps">
+              <ul>
+                <li class="navigation-divider d-flex align-items-center">
+                  <i class="mr-2" data-feather="globe"></i> Apps
+                </li>
+                <li>
+                  <a href="/admin/user">
+                    <span>Chat</span>
+                  </a>
+                </li>
 
-              <!-- begin::header search -->
+              </ul>
+            </div>
+            <div id="user">
+              <ul>
+                <li class="navigation-divider d-flex align-items-center">
+                  <i class="mr-2" data-feather="users"></i> User
+                </li>
+                <li>
+                  <a href="/admin/profile">Profile</a>
+                </li>
+                <li>
+                  <a href="/admin/user" class="">User List</a>
+                </li>
 
-              <!-- end::header search -->
-
-              <!-- begin::apps -->
-
-              <!-- end::apps -->
-
-              <!-- begin::header messages dropdown -->
-
-              <!-- END: Cart -->
-
-              <!-- begin::settings -->
-
-              <!-- end::settings -->
-
-              <!-- begin::user menu -->
-              <li class="nav-item dropdown">
-                <a
-                  href="#"
-                  class="nav-link"
-                  title="User menu"
-                  data-sidebar-target="#user-menu"
-                >
-                  <span class="mr-2 d-sm-inline d-none"
-                    ><%=currentUser.username%></span
-                  >
-                  <figure class="avatar avatar-sm">
-                    <img
-                      src="/assets/media/image/user/women_avatar1.jpg"
-                      class="rounded-circle"
-                      alt="avatar"
-                    />
-                  </figure>
-                </a>
-              </li>
-              <!-- end::user menu -->
-            </ul>
-
-            <!-- begin::mobile header toggler -->
-            <ul class="navbar-nav d-flex align-items-center">
-              <li class="nav-item header-toggler">
-                <a href="#" class="nav-link">
-                  <i data-feather="arrow-down"></i>
-                </a>
-              </li>
-            </ul>
-            <!-- end::mobile header toggler -->
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <!-- end::header -->
 
-      <div class="content-wrapper">
-        <!-- begin::navigation -->
-        <div class="navigation">
-          <div class="navigation-menu-tab">
-            <ul>
-              <li>
-                <a
-                  href="#"
-                  data-toggle="tooltip"
-                  data-placement="right"
-                  title="Analytics"
-                  data-nav-target="#analytics"
-                >
-                  <i data-feather="activity"></i>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  data-toggle="tooltip"
-                  data-placement="right"
-                  title="Projects"
-                  data-nav-target="#projects"
-                >
-                  <i data-feather="briefcase"></i>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  data-toggle="tooltip"
-                  data-placement="right"
-                  title="Apps"
-                  data-nav-target="#apps"
-                >
-                  <i data-feather="globe"></i>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  data-toggle="tooltip"
-                  data-placement="right"
-                  title="User"
-                  data-nav-target="#user"
-                >
-                  <i data-feather="users"></i>
-                </a>
-              </li>
-            </ul>
+      <!-- end::navigation -->
+
+      <div class="content-body">
+        <div class="content">
+          <%if(error && error.length>0){%>
+          <div class="text-center alert alert-danger" role="alert">
+            <%=error%>
           </div>
-          <div class="navigation-menu-body">
-            <div class="navigation-menu-group">
-              <div id="analytics">
-                <ul>
-                  <li class="navigation-divider d-flex align-items-center">
-                    <i class="mr-2" data-feather="activity"></i> Analytics
-                  </li>
-                  <li>
-                    <a href="analytics-dashboard.html">Dashboard</a>
-                  </li>
-                  <li>
-                    <a href="customers.html">Customers</a>
-                  </li>
-                  <li class="navigation-divider">Summary</li>
-                  <li>
-                    <a href="#" class="d-flex align-items-start">
-                      <div>
-                        <figure class="avatar mr-2">
-                          <span class="avatar-title bg-warning rounded-circle">
-                            <i class="ti-bar-chart-alt"></i>
-                          </span>
-                        </figure>
-                      </div>
-                      <div>
-                        <h6 class="mb-0">Total Sales</h6>
-                        <p class="text-muted mb-0 small">This Mounth</p>
-                        <h4 class="mb-0">$50.958</h4>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="d-flex align-items-start">
-                      <div>
-                        <figure class="avatar mr-2">
-                          <span class="avatar-title bg-success rounded-circle">
-                            <i class="ti-world"></i>
-                          </span>
-                        </figure>
-                      </div>
-                      <div>
-                        <h6 class="mb-0">Projects</h6>
-                        <p class="text-muted mb-0 small">Today</p>
-                        <h4 class="mb-0">35</h4>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="d-flex align-items-start">
-                      <div>
-                        <figure class="avatar mr-2">
-                          <span class="avatar-title bg-info rounded-circle">
-                            <i class="ti-user"></i>
-                          </span>
-                        </figure>
-                      </div>
-                      <div>
-                        <h6 class="mb-0">Total Visitor</h6>
-                        <p class="text-muted mb-0 small">Today</p>
-                        <h4 class="mb-0">5.301</h4>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div id="projects">
-                <ul>
-                  <li class="navigation-divider d-flex align-items-center">
-                    <i class="mr-2" data-feather="briefcase"></i> Projects
-                  </li>
-                  <li>
-                    <a href="/admin/project/">All Projects</a>
-                  </li>
-                  <li>
-                    <a href="/admin/project/status/completed" class="active"
-                      >Completed Projects</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/admin/project/status/awaitingPayment"
-                      >Projects Awaiting Payment</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/admin/project/status/submitted"
-                      >Projects Submitted by Employees</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/admin/project/status/ongoing">Ongoing Projects</a>
-                  </li>
-                  <li>
-                    <a href="/admin/project/status/cancelled"
-                      >Cancelled Project</a
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div id="apps">
-                <ul>
-                  <li class="navigation-divider d-flex align-items-center">
-                    <i class="mr-2" data-feather="globe"></i> Apps
-                  </li>
-                  <li>
-                    <a href="chat.html">
-                      <span>Chat</span>
-                      <span class="badge badge-danger">5</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="mail.html">
-                      <span>Mail</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="todo-list.html">
-                      <span>Todo List</span>
-                      <span class="badge badge-warning">2</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="file-manager.html">
-                      <span>File Manager</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="calendar.html">
-                      <span>Calendar</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="gallery.html">
-                      <span>Gallery</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="invoice.html">Invoice</a>
-                  </li>
-                  <li class="navigation-divider">Recent Contacts</li>
-                  <li>
-                    <div class="list-group list-group-flush">
-                      <a
-                        href="#"
-                        class="list-group-item d-flex align-items-center"
-                      >
-                        <div>
-                          <div class="avatar avatar-sm m-r-10">
-                            <img
-                              src="../../assets/media/image/user/man_avatar1.jpg"
-                              class="rounded-circle"
-                              alt="image"
-                            />
-                          </div>
-                        </div>
-                        <span>Valentine Maton</span>
-                      </a>
-                      <a
-                        href="#"
-                        class="list-group-item d-flex align-items-center"
-                      >
-                        <div>
-                          <div class="avatar avatar-sm m-r-10">
-                            <img
-                              src="../../assets/media/image/user/women_avatar2.jpg"
-                              class="rounded-circle"
-                              alt="image"
-                            />
-                          </div>
-                        </div>
-                        <span>Holmes Cherryman</span>
-                      </a>
-                      <a
-                        href="#"
-                        class="list-group-item d-flex align-items-center"
-                      >
-                        <div>
-                          <div class="avatar avatar-sm m-r-10">
-                            <img
-                              src="../../assets/media/image/user/women_avatar4.jpg"
-                              class="rounded-circle"
-                              alt="image"
-                            />
-                          </div>
-                        </div>
-                        <span>Kenneth Hune</span>
-                      </a>
-                      <a
-                        href="#"
-                        class="list-group-item d-flex align-items-center"
-                      >
-                        <div>
-                          <div class="avatar avatar-sm m-r-10">
-                            <img
-                              src="../../assets/media/image/user/women_avatar3.jpg"
-                              class="rounded-circle"
-                              alt="image"
-                            />
-                          </div>
-                        </div>
-                        <span>Holmes Cherryman</span>
-                      </a>
-                      <a
-                        href="#"
-                        class="list-group-item d-flex align-items-center"
-                      >
-                        <div>
-                          <div class="avatar avatar-sm m-r-10">
-                            <img
-                              src="../../assets/media/image/user/women_avatar5.jpg"
-                              class="rounded-circle"
-                              alt="image"
-                            />
-                          </div>
-                        </div>
-                        <span>Kenneth Hune</span>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <div id="user">
-                <ul>
-                  <li class="navigation-divider d-flex align-items-center">
-                    <i class="mr-2" data-feather="users"></i> User
-                  </li>
-                  <li>
-                    <a href="/user/<%=currentUser._id%>">Profile</a>
-                  </li>
-                  <li>
-                    <a href="/user/<%=currentUser._id%>/edit">User List</a>
-                  </li>
-                  <li>
-                    <a href="/admin/user">User Edit</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <%}%> <%if(message && message.length>0){%>
+          <div class="text-center alert alert-success" role="alert">
+            <%=message%>
           </div>
-        </div>
-
-        <!-- end::navigation -->
-
-        <div class="content-body">
-          <div class="content">
-            <%if(error && error.length>0){%>
-            <div class="text-center alert alert-danger" role="alert">
-              <%=error%>
-            </div>
-            <%}%> <%if(message && message.length>0){%>
-            <div class="text-center alert alert-success" role="alert">
-              <%=message%>
-            </div>
-            <%}%>
+          <%}%>
 
             <div class="row">
               <div class="col-md-12">
@@ -589,151 +261,114 @@
                         <tbody>
                           <%for(var i =projects.length -1;i>=0;i--){var project
                           = projects[i]%> <%if(project.status=="completed"){%>
-                          <tr>
-                            <td>
-                              <a href="/admin/project/<%=project._id%>"
-                                ><%=project.title%></a
-                              >
-                            </td>
-                            <td class="text-center">
-                              <%=project.price%>&nbsp;Rs/-
-                            </td>
-                            <td class="text-center">
-                              <div class="avatar-group">
-                                <figure class="avatar avatar-sm">
-                                  <a
-                                    href="#"
-                                    title="<%=project.employee.username%>"
-                                    data-toggle="tooltip"
-                                  >
-                                    <img
-                                      src="/uploads/<%=project.employee.image%>"
-                                      class="rounded-circle"
-                                      alt="avatar"
-                                    />
-                                  </a>
-                                </figure>
-                              </div>
-                            </td>
-                            <td class="text-center">
-                              <%if(project.status == "ongoing"){%>
-                              <span class="badge bg-info-bright text-info"
-                                >In Progress</span
-                              >
-                              <%}else if(project.status == "completed"){%>
-                              <span class="badge bg-info-bright text-success"
-                                >Completed</span
-                              >
-                              <%}else if(project.status == "awaitingPayment"){%>
-                              <span class="badge bg-info-bright text-success"
-                                >Awaiting Payment</span
-                              >
-                              <%}else{%>
-                              <span class="badge bg-danger-bright text-danger"
-                                >Cancelled</span
-                              >
-                              <%}%>
+          <tr>
+            <td>
+              <a href="/admin/project/<%=project._id%>"><%=project.title%></a>
+            </td>
+            <td class="text-center">
+              <%=project.price%>&nbsp;Rs/-
+            </td>
+            <td class="text-center">
+              <div class="avatar-group">
+                <figure class="avatar avatar-sm">
+                  <a href="#" title="<%=project.employee.username%>" data-toggle="tooltip">
+                    <img src="/uploads/<%=project.employee.image%>" class="rounded-circle" alt="avatar" />
+                  </a>
+                </figure>
+              </div>
+            </td>
+            <td class="text-center">
+              <%if(project.status == "ongoing"){%>
+              <span class="badge bg-info-bright text-info">In Progress</span>
+              <%}else if(project.status == "completed"){%>
+              <span class="badge bg-info-bright text-success">Completed</span>
+              <%}else if(project.status == "awaitingPayment"){%>
+              <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+              <%}else{%>
+              <span class="badge bg-danger-bright text-danger">Cancelled</span>
+              <%}%>
                             </td>
                             <td class="text-info">
                               <%=project.dated.toDateString()%>
-                            </td>
-                            <td class="text-danger">
-                              <%=project.dueDate.toDateString()%>
-                            </td>
-                            <%if(project.status == "completed"){%>
-                            <td class="text-success">
-                              <%=project.completionDate.toDateString()%>
-                            </td>
-                            <%}else{%>
-                            <td class="text-light">Not declared yet</td>
-                            <%}%>
+            </td>
+            <td class="text-danger">
+              <%=project.dueDate.toDateString()%>
+            </td>
+            <%if(project.status == "completed"){%>
+            <td class="text-success">
+              <%=project.completionDate.toDateString()%>
+            </td>
+            <%}else{%>
+            <td class="text-light">Not declared yet</td>
+            <%}%>
 
                             <td>
                               <%if(project.status =="awaitingPayment"){%>
+            <a href="/admin/project/<%=project._id%>/completed" class="text-success ml-2" data-toggle="tooltip"
+              title="Mark Payment as Complete">
+              <i class=" fas fa-money-bill-wave"></i>
+            </a>
+            <%}%> <%if(project.status =="ongoing"){%>
+            <a href="/admin/project/<%=project._id%>/awaitingPayment" class="text-success ml-2" data-toggle="tooltip"
+              title="Mark Project as Finished">
+              <i class=" fas fa-check"></i>
+            </a>
+            <a href="/admin/project/<%=project._id%>/cancelled" class="text-warning ml-2" data-toggle="tooltip"
+              title="Cancel the Project">
+              <i class=" fas fa-window-close"></i>
+            </a>
+            <%}%>
                               <a
-                                href="/admin/project/<%=project._id%>/completed"
-                                class="text-success ml-2"
-                                data-toggle="tooltip"
-                                title="Mark Payment as Complete"
-                              >
-                                <i class=" fas fa-money-bill-wave"></i>
-                              </a>
-                              <%}%> <%if(project.status =="ongoing"){%>
-                              <a
-                                href="/admin/project/<%=project._id%>/awaitingPayment"
-                                class="text-success ml-2"
-                                data-toggle="tooltip"
-                                title="Mark Project as Finished"
-                              >
-                                <i class=" fas fa-check"></i>
-                              </a>
-                              <a
-                                href="/admin/project/<%=project._id%>/cancelled"
-                                class="text-warning ml-2"
-                                data-toggle="tooltip"
-                                title="Cancel the Project"
-                              >
-                                <i class=" fas fa-window-close"></i>
-                              </a>
-                              <%}%>
-                              <a
-                                href="#"
-                                class="text-secondary ml-2"
-                                data-toggle="tooltip"
-                                title="Edit"
-                              >
-                                <i class=" fas fa-pencil-alt"></i>
-                              </a>
-                              <a
-                                href="/admin/project/<%=project._id%>/delete"
-                                class="text-danger ml-2"
-                                data-toggle="tooltip"
-                                title="Delete"
-                              >
-                                <i class="fas fa-trash"></i>
-                              </a>
-                            </td>
-                          </tr>
-                          <%};%> <%};%>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- begin::footer -->
-          <footer class="content-footer">
-            <div>
-              © 2020 Nago -
-              <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
-            </div>
-            <div>
-              <nav class="nav">
-                <a
-                  href="https://themeforest.net/licenses/standard"
-                  class="nav-link"
-                  >Licenses</a
-                >
-                <a href="#" class="nav-link">Change Log</a>
-                <a href="#" class="nav-link">Get Help</a>
-              </nav>
-            </div>
-          </footer>
-          <!-- end::footer -->
+                                href="/admin/project/<%=project._id%>/edit"
+            class="text-secondary ml-2"
+            data-toggle="tooltip"
+            title="Edit"
+            >
+            <i class=" fas fa-pencil-alt"></i>
+            </a>
+            <a href="/admin/project/<%=project._id%>/delete" class="text-danger ml-2" data-toggle="tooltip"
+              title="Delete">
+              <i class="fas fa-trash"></i>
+            </a>
+            </td>
+          </tr>
+          <%};%> <%};%>
+          </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <!-- end::main -->
+  </div>
+  </div>
+  </div>
 
-    <!-- Plugin scripts -->
-    <script src="/vendors/bundle.js"></script>
+  <!-- begin::footer -->
+  <footer class="content-footer">
+    <div>
+      © 2020 Nago -
+      <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
+    </div>
+    <div>
+      <nav class="nav">
+        <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
+        <a href="#" class="nav-link">Change Log</a>
+        <a href="#" class="nav-link">Get Help</a>
+      </nav>
+    </div>
+  </footer>
+  <!-- end::footer -->
+  </div>
+  </div>
+  </div>
+  <!-- end::main -->
 
-    <!-- Datatable -->
+  <!-- Plugin scripts -->
+  <script src="/vendors/bundle.js"></script>
 
-    <!-- App scripts -->
-    <script src="/assets/js/app.min.js"></script>
-  </body>
+  <!-- Datatable -->
+
+  <!-- App scripts -->
+  <script src="/assets/js/app.min.js"></script>
+</body>
+
 </html>
