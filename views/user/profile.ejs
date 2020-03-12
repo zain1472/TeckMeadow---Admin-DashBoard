@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>TeckMeadow</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
+
+  <!-- Plugin styles -->
+  <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
+  <script>
+    <%if (error && error.length > 0) {%>
+           var error = " <%=error%>";
+          <%}%> <%if (message && message.length > 0) {%>
+            var message = " <%=message%>";
+          <%}%>
+  </script>
+</head>
+
+<body class="boxed-layout">
+      <!-- begin::preloader-->
+      <div class="preloader">
+        <div class="preloader-icon"></div>
+      </div>
+      <!-- end::preloader -->
+    
+      <!-- BEGIN: Sidebar Group -->
+      <div class="sidebar-group">
+        <!-- BEGIN: User Menu -->
+        <div class="sidebar" id="user-menu">
+          <div class="py-4 text-center" data-backround-image="/assets/media/image/image1.jpg">
+            <figure class="avatar avatar-lg mb-3 border-0">
+              <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="image" />
+            </figure>
+            <h5 class="d-flex align-items-center justify-content-center">
+              <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
+            </h5>
+            <div> <strong><%=currentUser.country%></strong></div>
+          </div>
+          <div class="card mb-0 card-body shadow-none">
+            <div class="mb-4">
+              <div class="list-group list-group-flush">
+                <a href="/user/profile" class="list-group-item p-l-r-0">Profile</a>
+                <a href="/user/logout" class="list-group-item p-l-r-0 text-danger">Log
+                  Out!</a>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+        <!-- END: User Menu -->
+    
+        <!-- BEGIN: Settings -->
+    
+        <!-- END: Settings -->
+      </div>
+      <!-- END: Sidebar Group -->
+    
+      <!-- begin::main -->
+      <div class="layout-wrapper">
+        <!-- begin::header -->
+        <div class="header d-print-none">
+          <div class="header-left">
+            <div class="navigation-toggler">
+              <a href="#" data-action="navigation-toggler">
+                <i data-feather="menu"></i>
+              </a>
+            </div>
+            <div class="header-logo">
+              <a href="/">
+                <img class="logo" src="/assets/media/image/logo.png" alt="logo" />
+                <img class="logo-light" src="/assets/media/image/logo-light.png" alt="light logo" />
+              </a>
+            </div>
+          </div>
+    
+          <div class="header-body">
+            <div class="header-body-left">
+              <div class="page-title">
+                <h4>Chat</h4>
+              </div>
+            </div>
+            <div class="header-body-right">
+              <ul class="navbar-nav">
+                <!-- begin::header fullscreen -->
+                <li class="nav-item dropdown">
+                  <a href="#" class="nav-link" title="Fullscreen" data-toggle="fullscreen">
+                    <i class="maximize" data-feather="maximize"></i>
+                    <i class="minimize" data-feather="minimize"></i>
+                  </a>
+                </li>
+                <!-- end::header fullscreen -->
+    
+                <!-- begin::header search -->
+    
+                <!-- end::header search -->
+    
+                <!-- begin::apps -->
+    
+                <!-- end::apps -->
+    
+                <!-- begin::header messages dropdown -->
+    
+                <!-- END: Cart -->
+    
+                <!-- begin::settings -->
+    
+                <!-- end::settings -->
+    
+                <!-- begin::user menu -->
+                <li class="nav-item dropdown">
+                  <a href="#" class="nav-link" title="User menu" data-sidebar-target="#user-menu">
+                    <span class="mr-2 d-sm-inline d-none"><%=currentUser.username%></span>
+                    <figure class="avatar avatar-sm">
+                      <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="avatar" />
+                    </figure>
+                  </a>
+                </li>
+                <!-- end::user menu -->
+              </ul>
+    
+              <!-- begin::mobile header toggler -->
+              <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item header-toggler">
+                  <a href="#" class="nav-link">
+                    <i data-feather="arrow-down"></i>
+                  </a>
+                </li>
+              </ul>
+              <!-- end::mobile header toggler -->
+            </div>
+          </div>
+        </div>
+        <!-- end::header -->
+    
+        <div class="content-wrapper">
+          <!-- begin::navigation -->
+          <div class="navigation">
+            <div class="navigation-menu-tab">
+              <ul>
+    
+                <li>
+                  <a href="#" data-toggle="tooltip" data-placement="right" title="Projects" data-nav-target="#projects">
+                    <i data-feather="briefcase"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" data-toggle="tooltip" data-placement="right" title="Apps" data-nav-target="#apps">
+                    <i data-feather="globe"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" data-toggle="tooltip" data-placement="right" title="User" data-nav-target="#user">
+                    <i data-feather="users"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="navigation-menu-body">
+              <div class="navigation-menu-group">
+    
+                <div id="projects">
+                  <ul>
+                    <li class="navigation-divider d-flex align-items-center">
+                      <i class="mr-2" data-feather="briefcase"></i> Projects
+                    </li>
+                    <li>
+                      <a href="/user/project/" class="">All Projects</a>
+                    </li>
+                    <li>
+                      <a href="/user/project/status/completed">Completed Projects</a>
+                    </li>
+                    <li>
+                      <a href="/user/project/status/awaitingPayment">Projects Awaiting Payment</a>
+                    </li>
+                    <li>
+                      <a href="/user/project/status/submitted">Projects Submitted by Employees</a>
+                    </li>
+                    <li>
+                      <a href="/user/project/status/ongoing">Ongoing Projects</a>
+                    </li>
+                    <li>
+                      <a href="/user/project/status/cancelled">Cancelled Project</a>
+                    </li>
+                  </ul>
+                </div>
+                <div id="apps">
+                  <ul>
+                    <li class="navigation-divider d-flex align-items-center">
+                      <i class="mr-2" data-feather="globe"></i> Apps
+                    </li>
+                    <li>
+                      <a href="/" class="">
+                        <span>Chat</span>
+                      </a>
+                    </li>
+    
+                  </ul>
+                </div>
+                <div id="user">
+                  <ul>
+                    <li class="navigation-divider d-flex align-items-center">
+                      <i class="mr-2" data-feather="users"></i> User
+                    </li>
+                    <li>
+                      <a href="/user/profile" class="active">Profile</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      <!-- end::navigation -->
+
+      <div class="content-body">
+        <div class="content">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card">
+                    <img src="/assets/media/image/image1.jpg" class="card-img-top" alt="..." />
+                    <div class="card-body text-center m-t-70-minus">
+                      <figure class="avatar avatar-xl m-b-20">
+                        <img src="/uploads/<%=currentUser.image%>" class="rounded-circle" alt="..." />
+                      </figure>
+                      <h5>
+                        <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
+                      </h5>
+                      <p class="text-muted"><%=currentUser.country%></p>
+
+
+                    </div>
+                    <hr class="m-0" />
+                    <div class="card-body">
+                      <div class="row text-center">
+                        <div class="col-12 text-success">
+                          <h4 class="font-weight-bold"><%=currentUser.projects.length%></h4>
+                          <span>Total Projects</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="card">
+                    <div class="card-body">
+                      <ul class="nav nav-pills flex-column flex-sm-row" id="myTab" role="tablist">
+                        <li class="flex-sm-fill text-sm-center nav-item">
+                          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                            aria-selected="true">Settings</a>
+                        </li>
+
+
+                        <li class="flex-sm-fill text-sm-center nav-item">
+                          <a class="nav-link" id="earnings-tab" data-toggle="tab" href="#earnings" role="tab"
+                            aria-selected="false">Earnings</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h6 class="card-title">Settings</h6>
+                          <form enctype="multipart/form-data" action="/user/profile/" method="POST">
+                            <div class="d-flex mb-3">
+                              <figure class="mr-3">
+                                <img width="100" class="rounded" src="/uploads/<%=currentUser.image%>" alt="..." />
+                              </figure>
+                              <div>
+                                <p>
+                                  <%=currentUser.firstname%>&nbsp;<%=currentUser.lastname%>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Firstname</label>
+                                  <input type="text" class="form-control" value="<%=currentUser.firstname%>"
+                                    name="firstname" required />
+                                </div>
+                                <div class="form-group">
+                                  <label>Username
+                                    <span class="text-muted">(Can't Change)</span></label>
+                                  <input type="text" class="form-control" value="<%=currentUser.username%>"
+                                    name="username" readonly />
+                                </div>
+                                <div class="form-group">
+                                  <label>Country</label>
+                                  <input type="text" class="form-control" value="<%=currentUser.country%>"
+                                    name="country" required />
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Lastname</label>
+                                  <input type="text" class="form-control" value="<%=currentUser.lastname%>"
+                                    name="lastname" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Profile Photo</label>
+                                    <div class="custom-file">
+                                      <input
+                                        type="file"
+                                        class="custom-file-input"
+                                        id="customFile"
+                                        name="photo"
+                                        
+                                      />
+                                      <label class="custom-file-label" for="customFile"
+                                        >Upload Photo</label
+                                      >
+                                    </div>
+                                  </div>
+                                
+                              </div>
+                            </div>
+
+                            <button class="btn btn-primary">
+                              Save Changes
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                    <div class="tab-pane fade" id="earnings" role="tabpanel">
+                      <div class="card">
+                        <div class="card-body">
+                          <h6 class="card-title mb-0">Earnings</h6>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="thead-light">
+                              <tr>
+                                <th>Earning Title</th>
+                                <th>Earning Date</th>
+                                <th>Earning Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <%var total=0;for(var i = currentUser.projects.length-1;i>=0;i--){var project = currentUser.projects[i];%>
+                                      <%if(project.status=="completed"){total+=project.price;%> <tr>
+                                      <td><a href="/user/project/<%=project._id%>"><%=project.title%></a></td>
+                                      <td class="text-success">
+                                        <%=project.completionDate.toDateString();%>
+                                      </td>
+                                      <td class="text-secondary"><%=project.price%> Rs/-</td>
+                                      </tr>
+                                      <%}%>
+                              <%}%>
+
+                                      </tbody>
+                                      <tfoot>
+                                        <tr>
+                                          <th></th>
+                                          <th>Total Earnings</th>
+                                          <th>
+                                            <%=total%>
+                                          </th>
+                                        </tr>
+                                      </tfoot>
+                                      </table>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- begin::footer -->
+              <footer class="content-footer">
+                <div>
+                  © 2020 Nago -
+                  <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
+                </div>
+                <div>
+                  <nav class="nav">
+                    <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
+                    <a href="#" class="nav-link">Change Log</a>
+                    <a href="#" class="nav-link">Get Help</a>
+                  </nav>
+                </div>
+              </footer>
+              <!-- end::footer -->
+            </div>
+          </div>
+        </div>
+        <!-- end::main -->
+
+        <!-- Plugin scripts -->
+        <script src="/vendors/bundle.js"></script>
+
+        <!-- App scripts -->
+        <script src="/assets/js/app.min.js"></script>
+</body>
+
+
+</html>

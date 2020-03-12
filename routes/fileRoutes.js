@@ -3,13 +3,14 @@ var router = express.Router();
 var path = require("path");
 var Project = require("../models/project");
 var fs = require("fs");
+var middleware = require('../middleware/index');
 
 /* GET home page. */
 router.get("/:id/download", function(req, res, next) {
   res.download(path.join(__dirname, "../public/uploads/", req.params.id));
 });
 
-router.get("/:id/delete/:project/:filename/:fileId", (req, res) => {
+router.get("/:id/delete/:project/:filename/:fileId",middleware.isAdmin, (req, res) => {
   var file;
 
   Project.findById(req.params.project, function(err, project) {

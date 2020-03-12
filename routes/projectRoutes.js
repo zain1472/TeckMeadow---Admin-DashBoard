@@ -99,6 +99,8 @@ router.get("/:id/:status", middleware.isAdmin, (req, res) => {
             req.flash("success", "The project is now awaiting payment");
           } else if (status == "cancelled") {
             req.flash("success", "The project has been cancelled successfully");
+          }else{
+            res.redirect('/admin/project')
           }
           projects.save();
 

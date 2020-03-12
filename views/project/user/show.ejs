@@ -48,7 +48,7 @@
       <div class="card mb-0 card-body shadow-none">
         <div class="mb-4">
           <div class="list-group list-group-flush">
-            <a href="/admin/profile" class="list-group-item p-l-r-0">Profile</a>
+            <a href="/user/profile" class="list-group-item p-l-r-0">Profile</a>
             <a href="/user/logout" class="list-group-item p-l-r-0 text-danger">Log
               Out!</a>
           </div>
@@ -85,7 +85,7 @@
       <div class="header-body">
         <div class="header-body-left">
           <div class="page-title">
-            <h4>Admin Profile</h4>
+            <h4>Project</h4>
           </div>
         </div>
         <div class="header-body-right">
@@ -173,22 +173,22 @@
                   <i class="mr-2" data-feather="briefcase"></i> Projects
                 </li>
                 <li>
-                  <a href="/admin/project/" class="">All Projects</a>
+                  <a href="/user/project/" class="active">All Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/completed">Completed Projects</a>
+                  <a href="/user/project/status/completed">Completed Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/awaitingPayment">Projects Awaiting Payment</a>
+                  <a href="/user/project/status/awaitingPayment">Projects Awaiting Payment</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/submitted">Projects Submitted by Employees</a>
+                  <a href="/user/project/status/submitted">Projects Submitted by Employees</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/ongoing">Ongoing Projects</a>
+                  <a href="/user/project/status/ongoing">Ongoing Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/cancelled">Cancelled Project</a>
+                  <a href="/user/project/status/cancelled">Cancelled Project</a>
                 </li>
               </ul>
             </div>
@@ -198,7 +198,7 @@
                   <i class="mr-2" data-feather="globe"></i> Apps
                 </li>
                 <li>
-                  <a href="/admin/user">
+                  <a href="/">
                     <span>Chat</span>
                   </a>
                 </li>
@@ -211,11 +211,9 @@
                   <i class="mr-2" data-feather="users"></i> User
                 </li>
                 <li>
-                  <a href="/admin/profile">Profile</a>
+                  <a href="/user/profile">Profile</a>
                 </li>
-                <li>
-                  <a href="/admin/user" class="">User List</a>
-                </li>
+                
 
               </ul>
             </div>
@@ -287,65 +285,38 @@
                             </div>
                           </div>
                         </div>
-                        <div class="d-flex align-items-center my-4">
-                          <div class="avatar-group">
-                            <figure class="avatar">
-                              <a
-                                href="/admin/user/<%=project.employee.id%>"
-                                  title="<%=project.employee.username%>"
-                                  data-toggle="tooltip"
-                                  >
-                                  <img src="/uploads/<%=project.employee.image%>" class="rounded-circle" alt="avatar" />
-                                  </a>
-                                  </figure>
-                                </div>
-                                <div class="ml-2"><%=project.employee.username%></div>
-                              </div>
+                        
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-4 col-md-12">
-                          <div class="card">
-                            <div class="card-body">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="card-title">Actions</h6>
-                              </div>
-                              <div>
-                                <%if(project.status =="awaitingPayment"){%>
-                                <a href="/admin/project/<%=project._id%>/completed" class="text-success ml-2"
-                                  data-toggle="tooltip" title="Mark Payment as Complete">
-                                  <i class=" fas fa-money-bill-wave"></i>
-                                </a>
-                                <%}%> <%if(project.status =="ongoing"){%>
-                                <a href="/admin/project/<%=project._id%>/awaitingPayment" class="text-success ml-2"
-                                  data-toggle="tooltip" title="Mark Project as Finished">
-                                  <i class=" fas fa-check"></i>
-                                </a>
-                                <a href="/admin/project/<%=project._id%>/cancelled" class="text-warning ml-2"
-                                  data-toggle="tooltip" title="Cancel the Project">
-                                  <i class=" fas fa-window-close"></i>
-                                </a>
-                                <%}%>
-                          <a
-                            href="/admin/project/<%=project._id%>/edit"
-                                class="text-secondary ml-2"
-                                data-toggle="tooltip"
-                                title="Edit"
-                                >
-                                <i class=" fas fa-pencil-alt"></i>
-                                </a>
-                                <a href="/admin/project/<%=project._id%>/delete" class="text-danger ml-2"
-                                  data-toggle="tooltip" title="Delete">
-                                  <i class="fas fa-trash"></i>
-                                </a>
+                          <%if(project.status=="ongoing"){%>
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                  <h6 class="card-title">Actions</h6>
+                                </div>
+                                <div>
+                                   <%if(project.status =="ongoing"){%>
+                                  <a href="/user/project/<%=project._id%>/submitted" class="text-success ml-2"
+                                    data-toggle="tooltip" title="Mark Project as Finished">
+                                    <i class=" fas fa-check"></i>
+                                  </a>
+                                  <a href="/user/project/<%=project._id%>/cancelled" class="text-warning ml-2"
+                                    data-toggle="tooltip" title="Cancel the Project">
+                                    <i class=" fas fa-window-close"></i>
+                                  </a>
+                                  <%}%>
+                           
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          <%}%>
 
                           <div class="card">
                             <div class="card-body">
                               <h6 class="card-title">Attachment</h6>
-                              <div class="">
+                              <div class="" >
                                 <ul class="list-group list-group-flush">
                                   <%project.files.forEach(file=>{%>
                                   <li class="list-group-item d-flex align-items-center pl-0 pr-0">
@@ -366,32 +337,31 @@
                                         title="Download">
                                         <i class="fas fa-download"></i>
                                       </a>
-                                      <a href="/file/<%=file.path%>/delete/<%=project._id%>/<%=file.filename%>/<%=file._id%>"
-                                        class="text-danger ml-2" data-toggle="tooltip" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                      </a>
+                                      
                                     </div>
                                   </li>
                                   <%});%>
                                 </ul>
                               </div>
                               <div>
-                                <form enctype="multipart/form-data" action="/admin/project/<%=project._id%>/addfile"
-                                  class="mt-3" method="POST">
-                                  <div class="input-group">
-                                    <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="customFile" name="files" required
-                                        multiple />
-                                      <label class="custom-file-label" for="customFile">Add</label>
+                                <%if(project.status=="ongoing"){%>
+                                  <form enctype="multipart/form-data" action="/user/project/<%=project._id%>/addfile"
+                                    class="mt-3" method="POST">
+                                    <div class="input-group">
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" name="files" required
+                                          multiple />
+                                        <label class="custom-file-label" for="customFile">Add</label>
+                                      </div>
+  
+                                      <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit" id="button-addon1">
+                                          Add
+                                        </button>
+                                      </div>
                                     </div>
-
-                                    <div class="input-group-append">
-                                      <button class="btn btn-primary" type="submit" id="button-addon1">
-                                        Add
-                                      </button>
-                                    </div>
-                                  </div>
-                                </form>
+                                  </form>
+                                <%}%>
                               </div>
                             </div>
                           </div>

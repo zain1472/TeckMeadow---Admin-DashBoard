@@ -2,37 +2,33 @@
 <html lang="en">
 
 <head>
-  <title>TeckMeadow - Chat</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>TeckMeadow</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="/assets/media/image/favicon.png" />
 
   <!-- Plugin styles -->
   <link rel="stylesheet" href="/vendors/bundle.css" type="text/css" />
 
+  <!-- Datatable -->
+  <link rel="stylesheet" href="/vendors/dataTable/datatables.min.css" type="text/css" />
+
   <!-- App styles -->
   <link rel="stylesheet" href="/assets/css/app.min.css" type="text/css" />
-  <script>var currentUser = {
-      username: "<%=currentUser.username%>",
-      _id: "<%=currentUser._id%>",
-      <%if (currentUser.isAdmin) {%>
-      isAdmin: true
-        <%} else {%>
-          isAdmin: false
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+  <script>
+      <%if (error && error.length > 0) {%>
+             var error = " <%=error%>";
+            <%}%> <%if (message && message.length > 0) {%>
+              var message = " <%=message%>";
             <%}%>
-      
-    }
-    var user = {
-      username: "<%=user.username%>",
-      _id: "<%=user._id%>",
-      <%if (user.isAdmin) {%>
-      isAdmin: true
-        <%} else {%>
-          isAdmin: false
-            <%}%>
-      } </script>
-  <script src="/socket.io/socket.io.js"></script>
-
+  </script>
 </head>
 
-<body class="boxed-layout" onload="add()">
+<body class="boxed-layout">
   <!-- begin::preloader-->
   <div class="preloader">
     <div class="preloader-icon"></div>
@@ -55,7 +51,7 @@
       <div class="card mb-0 card-body shadow-none">
         <div class="mb-4">
           <div class="list-group list-group-flush">
-            <a href="/admin/profile" class="list-group-item p-l-r-0">Profile</a>
+            <a href="/user/profile" class="list-group-item p-l-r-0">Profile</a>
             <a href="/user/logout" class="list-group-item p-l-r-0 text-danger">Log
               Out!</a>
           </div>
@@ -92,7 +88,7 @@
       <div class="header-body">
         <div class="header-body-left">
           <div class="page-title">
-            <h4>Admin Profile</h4>
+            <h4>user Profile</h4>
           </div>
         </div>
         <div class="header-body-right">
@@ -180,22 +176,22 @@
                   <i class="mr-2" data-feather="briefcase"></i> Projects
                 </li>
                 <li>
-                  <a href="/admin/project/" class="">All Projects</a>
+                  <a href="/user/project/" class="">All Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/completed">Completed Projects</a>
+                  <a href="/user/project/status/completed" class="">Completed Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/awaitingPayment">Projects Awaiting Payment</a>
+                  <a href="/user/project/status/awaitingPayment">Projects Awaiting Payment</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/submitted">Projects Submitted by Employees</a>
+                  <a href="/user/project/status/submitted" class="active"> Submitted Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/ongoing">Ongoing Projects</a>
+                  <a href="/user/project/status/ongoing" class="">Ongoing Projects</a>
                 </li>
                 <li>
-                  <a href="/admin/project/status/cancelled">Cancelled Project</a>
+                  <a href="/user/project/status/cancelled" class="">Cancelled Project</a>
                 </li>
               </ul>
             </div>
@@ -205,7 +201,7 @@
                   <i class="mr-2" data-feather="globe"></i> Apps
                 </li>
                 <li>
-                  <a href="/admin/user" class="active">
+                  <a href="/">
                     <span>Chat</span>
                   </a>
                 </li>
@@ -218,114 +214,145 @@
                   <i class="mr-2" data-feather="users"></i> User
                 </li>
                 <li>
-                  <a href="/admin/profile">Profile</a>
+                  <a href="/user/profile">Profile</a>
                 </li>
-                <li>
-                  <a href="/admin/user" class="">User List</a>
-                </li>
+                
 
               </ul>
             </div>
           </div>
         </div>
       </div>
+
       <!-- end::navigation -->
 
       <div class="content-body">
         <div class="content">
-          <div class="row no-gutters chat-block">
-            <!-- begin::chat sidebar -->
-
-            <!-- end::chat sidebar -->
-
-            <!-- begin::chat content -->
-            <div class="col-sm-12 chat-content">
-              <!-- begin::chat header -->
-              <div class="chat-header border-bottom">
-                <div class="d-flex align-items-center">
-                  <div class="pr-3">
-                    <div class="avatar avatar-state-warning">
-                      <img src="/uploads/<%=user.image%>" class="rounded-circle" alt="image" />
-                    </div>
-                  </div>
-                  <div>
-                    <p class="mb-0"><%=user.username%></p>
-                    <%if(user.isOnline){%>
-                    <div class="m-0 small text-success">Online</div>
-                    <%}else{%>
-                    <div class="m-0 small text-success">Offline</div>
-                    <%}%>
-                    </div>
-                    
-                  </div>
-                </div>
-                <!-- end::chat header -->
-
-                <!-- begin::messages -->
-                <div id="messages" class="messages pb-3">
-                <% user.messages.forEach(message=>{%>
-                    <%if (message.sender=="admin"){%>
-                    <div class="message-item me">
-                      <%}else{%>
-
-                      <div class="message-item">
-                        <%}%>
-                    <div class="message-item-content"><%=message.message%></div>
-                      <span class="time small text-muted font-italic">
-                        <%if ((Date.now() - message.dated)> (1000*60*60)) {%>
-                        <%=message.dated.toDateString()%>
-
-                        <%}else{%>
-                        Just now
-                        <%}%>
-                      </span>
-                  </div>
-                <%})%>
-
-
-
-
-
-                    </div>
-                    <!-- end::messages -->
-
-                    <!-- begin::chat footer -->
-                    <div class="chat-footer border-top">
-                      <form id="message-form" class="d-flex">
-
-
-                        <div class="flex-grow-1">
-                          <input type="text" class="form-control" placeholder="Write your message" id="m"
-                            autocomplete="off" />
-                        </div>
-                        <div class="chat-footer-buttons d-flex">
-                          <button class="btn btn-primary" type="submit">
-                            <i data-feather="send" class="width-15 height-15"></i>
-                          </button>
-
-                        </div>
-                      </form>
-                    </div>
-                    <!-- end::chat footer -->
-                  </div>
-                  <!-- begin::chat content -->
-                </div>
-              </div>
-
-              <!-- begin::footer -->
-
-              <!-- end::footer -->
-            </div>
+          <%if(error && error.length>0){%>
+          <div class="text-center alert alert-danger" role="alert">
+            <%=error%>
           </div>
+          <%}%> <%if(message && message.length>0){%>
+          <div class="text-center alert alert-success" role="alert">
+            <%=message%>
+          </div>
+          <%}%>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table id="project-list" class="table table-lg">
+                        <thead>
+                          <tr>
+                            <th>Project Title</th>
+                            <th class="text-center">Payment</th>
+                            <th class="text-center">Employee</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Started Date</th>
+                            <th class="text-center">Due Date</th>
+                            <th class="text-center">Completion Date</th>
+                            <th class="text-center">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <%for(var i =projects.length -1;i>=0;i--){var project
+                          = projects[i]%> <%if(project.status=="ongoing"){%>
+
+          <tr>
+            <td>
+              <a href="/user/project/<%=project._id%>"><%=project.title%></a>
+            </td>
+            <td class="text-center">
+              <%=project.price%>&nbsp;Rs/-
+            </td>
+            <td class="text-center">
+              <div class="avatar-group">
+                <figure class="avatar avatar-sm">
+                  <a href="#" title="<%=project.employee.username%>" data-toggle="tooltip">
+                    <img src="/uploads/<%=project.employee.image%>" class="rounded-circle" alt="avatar" />
+                  </a>
+                </figure>
+              </div>
+            </td>
+            <td class="text-center">
+              <%if(project.status == "ongoing"){%>
+              <span class="badge bg-info-bright text-info">In Progress</span>
+              <%}else if(project.status == "completed"){%>
+              <span class="badge bg-info-bright text-success">Completed</span>
+              <%}else if(project.status == "awaitingPayment"){%>
+              <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+              <%}else{%>
+              <span class="badge bg-danger-bright text-danger">Cancelled</span>
+              <%}%>
+                            </td>
+                            <td class="text-info">
+                              <%=project.dated.toDateString()%>
+            </td>
+            <td class="text-danger">
+              <%=project.dueDate.toDateString()%>
+            </td>
+            <%if(project.status == "completed"){%>
+            <td class="text-success">
+              <%=project.completionDate.toDateString()%>
+            </td>
+            <%}else{%>
+
+            <td class="text-light">Not declared yet</td>
+            <%}%>
+
+                            <td>
+                             <%if(project.status =="ongoing"){%>
+            <a href="/user/project/<%=project._id%>/submitted" class="text-success ml-2" data-toggle="tooltip"
+              title="Submit the project">
+              <i class=" fas fa-check"></i>
+            </a>
+            <a href="/user/project/<%=project._id%>/cancelled" class="text-warning ml-2" data-toggle="tooltip"
+              title="Cancel the Project">
+              <i class=" fas fa-window-close"></i>
+            </a>
+            <%}%>
+                              
+            </td>
+          </tr>
+          <%};%> <%};%>
+          </tbody>
+          </table>
         </div>
-        <!-- end::main -->
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
 
-        <!-- Plugin scripts -->
-        <script src="/vendors/bundle.js"></script>
+  <!-- begin::footer -->
+  <footer class="content-footer">
+    <div>
+      © 2020 Nago -
+      <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
+    </div>
+    <div>
+      <nav class="nav">
+        <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
+        <a href="#" class="nav-link">Change Log</a>
+        <a href="#" class="nav-link">Get Help</a>
+      </nav>
+    </div>
+  </footer>
+  <!-- end::footer -->
+  </div>
+  </div>
+  </div>
+  <!-- end::main -->
 
-        <!-- App scripts -->
-        <script src="/assets/js/app.min.js"></script>
-        <script src="/js/script.js"></script>
+  <!-- Plugin scripts -->
+  <script src="/vendors/bundle.js"></script>
+
+  <!-- Datatable -->
+
+  <!-- App scripts -->
+  <script src="/assets/js/app.min.js"></script>
 </body>
 
 </html>

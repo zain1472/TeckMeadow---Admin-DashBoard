@@ -20,7 +20,7 @@ module.exports = {
         next();
       }
     } else {
-      next();
+      res.redirect('/');
     }
   },
   isLoggedIn: function(req, res, next) {

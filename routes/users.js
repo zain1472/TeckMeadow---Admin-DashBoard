@@ -75,25 +75,19 @@ router.get("/logout", (req, res) => {
   return res.redirect("/");
 });
 
-router.get("/:id", middleware.isLoggedIn, (req, res) => {
-  var id = req.params.id;
-  User.findById(id)
-    .populate("messages")
-    .exec(function (err, user) {
-      if (err) {
-        console.log("No such user found in database");
-      } else {
-        res.render("user/show", {
-          user: user
-        });
-      }
-    });
-});
-router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-  res.render("user/edit");
+router.get("/profile", middleware.isLoggedIn, (req, res) => {
+  User.findById(req.user._id).populate("projects").exec(function (err,user) {
+    if (err) {
+      res.redirect('/');
+      console.log(err);
+    } else {
+      res.render('user/profile',{currentUser:user});
+    }
+  })
+  
 });
 router.post(
-  "/:id/edit",
+  "/profile",
   middleware.isLoggedIn,
   upload.single("photo"),
   (req, res) => {
@@ -115,7 +109,7 @@ router.post(
       if (err) {
         console.log(err);
       } else {
-        res.redirect("/user/" + req.user._id);
+        res.redirect("/user/profile");
       }
     });
   }
