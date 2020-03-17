@@ -277,14 +277,16 @@
             </td>
             <td class="text-center">
               <%if(project.status == "ongoing"){%>
-              <span class="badge bg-info-bright text-info">In Progress</span>
-              <%}else if(project.status == "completed"){%>
-              <span class="badge bg-info-bright text-success">Completed</span>
-              <%}else if(project.status == "awaitingPayment"){%>
-              <span class="badge bg-info-bright text-success">Awaiting Payment</span>
-              <%}else{%>
-              <span class="badge bg-danger-bright text-danger">Cancelled</span>
-              <%}%>
+                <span class="badge bg-info-bright text-info">In Progress</span>
+                <%}else if(project.status == "completed"){%>
+                <span class="badge bg-info-bright text-success">Completed</span>
+                <%}else if(project.status == "awaitingPayment"){%>
+                  <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+                <%}else if(project.status == "submitted"){%>
+                  <span class="badge bg-info-bright text-success">Submitted</span>
+                <%}else{%>
+                  <span class="badge bg-danger-bright text-danger">Cancelled</span>
+                <%}%>
                             </td>
                             <td class="text-info">
                               <%=project.dated.toDateString()%>
@@ -303,7 +305,7 @@
 
             <td>
             <%if(project.status =="ongoing"){%>
-            <a href="/user/project/<%=project._id%>/awaitingPayment" class="text-success ml-2" data-toggle="tooltip"
+            <a href="/user/project/<%=project._id%>/submitted" class="text-success ml-2" data-toggle="tooltip"
               title="Mark Project as Finished">
               <i class=" fas fa-check"></i>
             </a>

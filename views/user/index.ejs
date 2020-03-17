@@ -278,10 +278,12 @@
                             title="Chat">
                             <i class="far fa-comment"></i>
                             </a>
+                            <%if(user._id.toString()!=currentUser._id.toString()){%>
                             <a href="/user/<%=user._id%>/delete%>" class="text-danger ml-2" data-toggle="tooltip"
                               title="Delete">
                               <i class="fas fa-trash"></i>
                             </a>
+                            <%}%>
                           </td>
                         </tr>
                         <%})%>

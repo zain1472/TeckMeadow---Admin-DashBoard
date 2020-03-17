@@ -28,7 +28,9 @@ var userSchema = new mongoose.Schema({
   },
   country: String,
   image: String,
-  gender: String
+  gender: String,
+  email: String,
+  active:Boolean
 });
 userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", userSchema);

@@ -5,6 +5,7 @@ var Project = require("../models/project");
 var upload = require("../upload");
 var fs = require("fs");
 var path = require("path");
+var mailer = require("../config/mailer");
 router.get("/", middleware.isAdmin, (req, res) => {
   Project.find({})
     .populate("Users")
@@ -94,6 +95,12 @@ router.get("/:id/:status", middleware.isAdmin, (req, res) => {
           projects.status = status;
           if (status == "completed") {
             req.flash("success", "The payment has been marked as completed");
+            mailer.sendMail({
+              from:'zain.abideen14572@gmai.com',
+              to:projects.employee.email,
+              subject: 'Project Completed',
+              html:'<p>Hey '+projects.employee.username+',</p><br><p>Thank you for signing up to my weekly newsletter.Before we get started, you’ll have to confirm your email address.Click on the button below to verify your email address and you’re officially one of us!<a href="">link</a></p>'
+            })
             projects.completionDate = Date.now();
           } else if (status == "awaitingPayment") {
             req.flash("success", "The project is now awaiting payment");
@@ -128,7 +135,8 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
           employee: {
             id: user._id,
             username: user.firstname + " " + user.lastname,
-            image: user.image
+            image: user.image,
+            email: user.email
           },
           price: req.body.price,
           dueDate: req.body.dueDate,
@@ -139,6 +147,12 @@ router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
         function (err, project) {
           user.projects.push(project);
           user.save();
+          mailer.sendMail({
+            from:'zain.abideen14572@gmail.com',
+            to: user.email,
+            subject: 'New Project',
+            text:`Hi there `+user.firstname +` `+user.lastname + `, You have been assigned a new project form TeckMeadow. Go and check it out`
+          })
           req.flash("success", "Successfully created a new Project");
           res.redirect("/admin/project");
         }

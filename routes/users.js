@@ -6,6 +6,8 @@ var middleware = require("../middleware/index");
 var upload = require("../upload");
 var fs = require('fs');
 var path = require('path');
+var randomString = require('random-string');
+var mailer = require('../config/mailer');
 router.get("/login", function (req, res, next) {
   res.render("user/login");
 });
@@ -24,7 +26,9 @@ router.post("/register", upload.single("photo"), (req, res) => {
     lastname: req.body.lastname,
     firstname: req.body.firstname,
     image: req.file.filename,
-    country: req.body.country
+    country: req.body.country,
+    email: req.body.email,
+    active: false
   });
   User.register(newUser, req.body.password, function (err) {
     if (err) {
@@ -34,10 +38,40 @@ router.post("/register", upload.single("photo"), (req, res) => {
     } else {
       passport.authenticate("local")(req, res, function () {
         req.flash("success", "Successfully registered your new account");
-        res.redirect("/");
+        res.redirect("/user/verify");
       });
     }
   });
+});
+router.get('/verify',middleware.isAuthenticated,(req,res)=>{
+  mailer.sendMail({
+    from:'zain.abideen14572@gmail.com',
+    to:req.user.email,
+    subject:'Verify Email Address',
+    text:`click the link below to verify your email address
+http://localhost:3000/user/verify/`+req.user._id
+  },function (err) {
+    if (err) {
+      console.log(err);
+      res.redirect('/');
+    } else {
+      res.render('user/verify');
+    }
+  });
+});
+router.get('/verify/:id',middleware.isAuthenticated,(req,res)=>{
+  User.findById(req.params.id,function (err,user) {
+    if (err) {
+      console.log(err);
+      req.flash("error",err.message);
+      res.redirect('/');
+    } else {
+      user.active = true;
+      user.save();
+      req.flash('success',"Welcome to TeckMeadow")
+      res.redirect('/');
+    }
+  })
 });
 router.post("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
   var isAdmin = false;

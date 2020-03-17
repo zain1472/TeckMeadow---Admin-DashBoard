@@ -16,7 +16,6 @@ var projectRoutes = require("./routes/projectRoutes");
 var userProjectRoutes = require('./routes/userProjectRoutes');
 var fileRoutes = require("./routes/fileRoutes");
 var Message = require("./models/message");
-
 var users = [];
 
 mongoose.connect(

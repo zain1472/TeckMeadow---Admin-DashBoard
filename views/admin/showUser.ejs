@@ -337,7 +337,7 @@
                         <div class="card-body">
                           <form enctype="multipart/form-data" action="/admin/project/" method="POST">
                             <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Project title" name="title" required
+                              <input type="text" class="form-control" placeholder="Project title" name="title" required autocomplete="off"
                                 autofocus />
                             </div>
                             <div class="form-group">
@@ -346,7 +346,7 @@
                             </div>
                             <div class="form-group">
                               <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="files" required
+                                <input type="file" class="custom-file-input" id="customFile" name="files" 
                                   multiple />
                                 <label class="custom-file-label" for="customFile">Upload Files</label>
                               </div>

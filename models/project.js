@@ -12,7 +12,8 @@ var projectSchema = new mongoose.Schema({
     id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user"
-    }
+    },
+    email:String
   },
   files: [
     {

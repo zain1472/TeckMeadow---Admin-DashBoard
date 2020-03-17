@@ -258,7 +258,7 @@
                         </thead>
                         <tbody>
                           <%for(var i =projects.length -1;i>=0;i--){var project
-                          = projects[i]%> <%if(project.status=="ongoing"){%>
+                          = projects[i]%> <%if(project.status=="submitted"){%>
 
           <tr>
             <td>
@@ -282,9 +282,11 @@
               <%}else if(project.status == "completed"){%>
               <span class="badge bg-info-bright text-success">Completed</span>
               <%}else if(project.status == "awaitingPayment"){%>
-              <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+                <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+              <%}else if(project.status == "submitted"){%>
+                <span class="badge bg-info-bright text-success">Submitted</span>
               <%}else{%>
-              <span class="badge bg-danger-bright text-danger">Cancelled</span>
+                <span class="badge bg-danger-bright text-danger">Cancelled</span>
               <%}%>
                             </td>
                             <td class="text-info">

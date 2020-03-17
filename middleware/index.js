@@ -25,7 +25,12 @@ module.exports = {
   },
   isLoggedIn: function(req, res, next) {
     if (req.isAuthenticated()) {
-      return next();
+      if (req.user.active==true) {
+        return next();
+      }else{
+        req.flash("error", "Verify your email address. A confirmation email has been sent to email address.");
+        return res.redirect('/user/verify');
+      }
     }
     req.flash("error", "You must be logged in first");
     res.redirect("/user/login");
@@ -66,6 +71,14 @@ module.exports = {
       }
     } else {
       res.redirect("/user/login");
+    }
+  },
+  isAuthenticated: function (req,res,next) {
+    if(req.isAuthenticated()){
+      return next();
+    }else{
+      req.flash("error","You must be logged in first");
+      return res.redirect('/user/login');
     }
   }
 };

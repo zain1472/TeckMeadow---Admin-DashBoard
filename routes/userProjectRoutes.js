@@ -34,10 +34,10 @@ router.get("/status/:status", middleware.isUser, (req, res) => {
 
 
 // change project status
-router.get("/:id/:status", middleware.isAdmin, (req, res) => {
+router.get("/:id/:status", middleware.isUser, (req, res) => {
   var status = req.params.status;
   var id = req.params.id;
-  
+  console.log(status);
     Project.findById(id)
       .populate("Users")
       .exec(function (err, projects) {
