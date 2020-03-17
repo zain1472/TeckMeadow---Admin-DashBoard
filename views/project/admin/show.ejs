@@ -250,6 +250,8 @@
                             <span class="badge bg-info-bright text-success">Completed</span>
                             <%}else if(project.status == "awaitingPayment"){%>
                             <span class="badge bg-info-bright text-success">Awaiting Payment</span>
+                            <%}else if(project.status == "submitted"){%>
+                            <span class="badge bg-info-bright text-success">Submitted</span>
                             <%}else{%>
                             <span class="badge bg-danger-bright text-danger">Cancelled</span>
                             <%}%>
@@ -376,7 +378,7 @@
                                 </ul>
                               </div>
                               <div>
-                                <form enctype="multipart/form-data" action="/admin/project/<%=project._id%>/addfile"
+                                <form id="submit" enctype="multipart/form-data" action="/admin/project/<%=project._id%>/addfile"
                                   class="mt-3" method="POST">
                                   <div class="input-group">
                                     <div class="custom-file">
@@ -385,13 +387,20 @@
                                       <label class="custom-file-label" for="customFile">Add</label>
                                     </div>
 
-                                    <div class="input-group-append">
+                                    <div class="input-group-append" id="">
                                       <button class="btn btn-primary" type="submit" id="button-addon1">
                                         Add
                                       </button>
+                                      
                                     </div>
                                   </div>
                                 </form>
+                                <div  class="d-flex justify-content-center " >
+                                  
+                                  <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -400,20 +409,10 @@
                     </div>
                   </div>
                 </div>
-
                 <!-- begin::footer -->
                 <footer class="content-footer">
-                  <div>
-                    © 2020 Nago -
-                    <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
-                  </div>
-                  <div>
-                    <nav class="nav">
-                      <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
-                      <a href="#" class="nav-link">Change Log</a>
-                      <a href="#" class="nav-link">Get Help</a>
-                    </nav>
-                  </div>
+                  <div>© 2020 TeckMeadow - Dashboard</a></div>
+        
                 </footer>
                 <!-- end::footer -->
               </div>
@@ -442,6 +441,7 @@
 
           <!-- Dashboard scripts -->
           <script src="../../assets/js/examples/dashboard.js"></script>
+          <script src="/js/loader.js"></script>
           <div class="colors">
             <!-- To use theme colors with Javascript -->
             <div class="bg-primary"></div>

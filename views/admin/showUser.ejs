@@ -367,9 +367,15 @@
                                 <div class="text-right">
                                   <ul class="list-inline">
                                     <li class="list-inline-item">
-                                      <button class="btn btn-primary">
+                                      <button id="submit" class="btn btn-primary">
                                         Submit
                                       </button>
+                                      <div  class="d-flex justify-content-center " >
+                                  
+                                        <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+                                          <span class="sr-only">Loading...</span>
+                                        </div>
+                                      </div>
                                     </li>
                                   </ul>
                                 </div>
@@ -427,17 +433,8 @@
 
         <!-- begin::footer -->
         <footer class="content-footer">
-          <div>
-            © 2020 Nago -
-            <a href="http://laborasyon.com/" target="_blank">Laborasyon</a>
-          </div>
-          <div>
-            <nav class="nav">
-              <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>
-              <a href="#" class="nav-link">Change Log</a>
-              <a href="#" class="nav-link">Get Help</a>
-            </nav>
-          </div>
+          <div>© 2020 TeckMeadow - Dashboard</a></div>
+
         </footer>
         <!-- end::footer -->
       </div>
@@ -450,6 +447,7 @@
 
   <!-- App scripts -->
   <script src="../../assets/js/app.min.js"></script>
+  <script src="/js/loader.js"></script>
 </body>
 
 <!-- Mirrored from nago.laborasyon.com/demos/layouts/boxed-layout/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2020 21:51:46 GMT -->

@@ -251,6 +251,7 @@
                       <tbody>
                         <%var i=1;%>
                         <%users.forEach(user=>{%>
+                        <%if(user.active){%>
                         <tr>
                           <td></td>
                           <td><%=i++%></td>
@@ -286,6 +287,7 @@
                             <%}%>
                           </td>
                         </tr>
+                        <%}%>
                         <%})%>
                       </tbody>
                     </table>
