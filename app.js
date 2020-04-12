@@ -15,6 +15,7 @@ var fileRoutes = require("./routes/fileRoutes");
 var notificationRoutes = require("./routes/notificationRoutes");
 var Message = require("./models/message");
 var users = [];
+const port = process.env.PORT || 5000;
 // mongoose.connect(
 //   "mongodb+srv://wela:wela@cluster0-d3lhq.mongodb.net/test?retryWrites=true&w=majority",
 //   {
@@ -123,6 +124,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
-http.listen(5000, function () {
+http.listen(port, function () {
   console.log("listening on *:5000");
 });
