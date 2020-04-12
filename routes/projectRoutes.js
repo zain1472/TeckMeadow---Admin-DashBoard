@@ -36,7 +36,9 @@ router.delete("/:id", auth.isAdmin, (req, res) => {
     } else {
       for (let index = 0; index < project.files.length; index++) {
         const element = project.files[index];
-        fs.unlinkSync(path.join(__dirname, "../public/uploads/", element.path));
+        fs.unlinkSync(
+          path.join(__dirname, "../client/build/uploads/", element.path)
+        );
       }
 
       console.log(project);

@@ -147,31 +147,7 @@ router.post("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
     }
   });
 });
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/user/login",
-  }),
-  (req, res) => {}
-);
-router.get("/logout", (req, res) => {
-  req.logOut();
-  return res.redirect("/");
-});
 
-router.get("/profile", auth.isLoggedIn, (req, res) => {
-  User.findById(req.user._id)
-    .populate("projects")
-    .exec(function (err, user) {
-      if (err) {
-        res.redirect("/");
-        console.log(err);
-      } else {
-        res.render("user/profile", { currentUser: user });
-      }
-    });
-});
 router.put(
   "/:id",
   auth.isLoggedIn,
@@ -255,7 +231,9 @@ router.delete("/:id/", auth.isAdmin, (req, res) => {
         console.log(err);
         res.status(500).json({ msg: "Internal Server Error" });
       } else {
-        fs.unlinkSync(path.join(__dirname, "../public/uploads/", user.image));
+        fs.unlinkSync(
+          path.join(__dirname, "../client/build/uploads/", user.image)
+        );
         res.json({ user });
       }
     });

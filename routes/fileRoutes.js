@@ -9,7 +9,7 @@ var auth = require("../middleware/auth");
 router.get("/:id/download", function (req, res, next) {
   console.log(req.params.id);
   res.download(
-    path.join(__dirname, "../public/uploads/", req.params.id),
+    path.join(__dirname, "../client/build/uploads/", req.params.id),
     (err) => {
       if (err) {
         console.log(err);
