@@ -14,7 +14,7 @@ router.get("/:id/download", function (req, res, next) {
       if (err) {
         console.log(err);
       } else {
-        console.log("object");
+        console.log("file found and downloaded");
       }
     }
   );
@@ -37,7 +37,9 @@ router.get("/:id/delete/:project/:filename/:fileId", (req, res) => {
           break;
         }
       }
-      fs.unlinkSync(path.join(__dirname, "../public/uploads/", file.path));
+      fs.unlinkSync(
+        path.join(__dirname, "../client/build/uploads/", file.path)
+      );
       project.files.splice(index, 1);
       project.save();
       res.json({ msg: "Successfully deleted the file" });
