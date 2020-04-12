@@ -51,6 +51,7 @@ function appendMessage(message, me) {
   newMessage.append(time);
 
   document.getElementById("messages").append(newMessage);
+  $("#scrollintoview")[0].scrollIntoView();
   // $("#messages").animate(
   //   {
   //     scrollTop: $(".message-content")

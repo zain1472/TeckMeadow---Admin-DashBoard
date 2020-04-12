@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
 
 var userSchema = new mongoose.Schema({
   username: String,
@@ -7,30 +6,39 @@ var userSchema = new mongoose.Schema({
   messages: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "message"
-    }
+      ref: "message",
+    },
+  ],
+  notifications: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "notification",
+    },
   ],
   projects: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "project"
-    }
+      ref: "project",
+    },
   ],
   isAdmin: {
     type: Boolean,
-    default: false
+    default: false,
   },
   firstname: String,
   lastname: String,
   isOnline: {
     type: Boolean,
-    default: false
+    default: false,
   },
   country: String,
   image: String,
   gender: String,
   email: String,
-  active:Boolean
+  active: Boolean,
+  joined: {
+    default: Date.now(),
+    type: Date,
+  },
 });
-userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", userSchema);

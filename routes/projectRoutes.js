@@ -1,175 +1,201 @@
 var router = require("express").Router();
-var middleware = require("../middleware/index");
+var auth = require("../middleware/auth");
 var User = require("../models/user");
 var Project = require("../models/project");
 var upload = require("../upload");
 var fs = require("fs");
 var path = require("path");
 var mailer = require("../config/mailer");
-router.get("/", middleware.isAdmin, (req, res) => {
-  Project.find({})
-    .populate("Users")
-    .exec(function (err, projects) {
+var Notification = require("../models/notification");
+// ROUTE GET /api/projects/
+// DESC get all projects
+// ACCESS USER
+router.get("/", auth.isLoggedIn, async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (user.isAdmin == true) {
+    Project.find({}, function (err, projects) {
       if (err) {
-        res.redirect("/admin/user");
-        console.log(err);
+        res.status(500).json({ msg: "Internal Server error" });
       } else {
-        res.render("project/admin/index", { projects: projects });
-      }
-    });
-});
-// completed projects
-router.get("/status/:status", middleware.isAdmin, (req, res) => {
-  var status = req.params.status;
-  Project.find({})
-    .populate("Users")
-    .exec(function (err, projects) {
-      if (err) {
-        res.redirect("/admin/user");
-        console.log(err);
-      } else {
-        res.render("project/admin/" + status, { projects: projects });
-      }
-    });
-});
-
-// get form to edit project
-router.get("/:id/edit", middleware.isAdmin, (req, res) => {
-  Project.findById(req.params.id, function (err, project) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(project);
-      console.log(project.dueDate.toDateString());
-      res.render("project/admin/edit", { project: project });
-    }
-  });
-});
-router.post("/:id/edit", middleware.isAdmin, (req, res) => {
-  var newProject = {
-    title: req.body.title,
-    description: req.body.description,
-    dueDate: req.body.dueDate,
-    price: req.body.price
-  }
-  Project.findByIdAndUpdate(req.params.id, newProject, function (err, project) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(req.body);
-      req.flash("success", "Applied the changes to the project successfully")
-      res.redirect("/admin/project/" + req.params.id);
-    }
-  });
-});
-// change project status
-router.get("/:id/:status", middleware.isAdmin, (req, res) => {
-  var status = req.params.status;
-  var id = req.params.id;
-  if (status == "delete") {
-    Project.findByIdAndDelete(id, function (err, project) {
-      if (err) {
-        console.log(err);
-      } else {
-        if (project) {
-          for (let index = 0; index < project.files.length; index++) {
-            const element = project.files[index];
-            fs.unlinkSync(
-              path.join(__dirname, "../public/uploads/", element.path)
-            );
-          }
-        }
-        req.flash("success", "successfully deleted the project");
-        res.redirect("/admin/project/");
+        res.json({ projects: projects });
       }
     });
   } else {
-    Project.findById(id)
-      .populate("Users")
-      .exec(function (err, projects) {
-        if (err) {
-          res.redirect("/admin/user");
-          console.log(err);
-        } else {
-
-          projects.status = status;
-          if (status == "completed") {
-            req.flash("success", "The payment has been marked as completed");
-            mailer.sendMail({
-              from:'zain.abideen14572@gmai.com',
-              to:projects.employee.email,
-              subject: 'Project Completed',
-              html:'<p>Hey '+projects.employee.username+',</p><br><p>Thank you for signing up to my weekly newsletter.Before we get started, you’ll have to confirm your email address.Click on the button below to verify your email address and you’re officially one of us!<a href="">link</a></p>'
-            })
-            projects.completionDate = Date.now();
-          } else if (status == "awaitingPayment") {
-            req.flash("success", "The project is now awaiting payment");
-          } else if (status == "cancelled") {
-            req.flash("success", "The project has been cancelled successfully");
-          }else{
-            res.redirect('/admin/project')
-          }
-          projects.save();
-
-          res.redirect("/admin/project/status/" + status);
-        }
-      });
+    const employee = await User.findById(req.user.id).populate("projects");
+    res.json({ projects: employee.projects });
   }
 });
-router.post("/", middleware.isAdmin, upload.array("files", 5), (req, res) => {
+// ROUTE GET /api/projects/
+// DESC get all projects
+// ACCESS USER
+router.delete("/:id", auth.isAdmin, (req, res) => {
+  Project.findByIdAndDelete(req.params.id, function (err, project) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ msg: "Internal server error" });
+    } else {
+      for (let index = 0; index < project.files.length; index++) {
+        const element = project.files[index];
+        fs.unlinkSync(path.join(__dirname, "../public/uploads/", element.path));
+      }
+
+      console.log(project);
+      res.json({ project });
+    }
+  });
+});
+
+// get form to edit project
+
+router.put("/:id/", auth.isAdmin, async (req, res) => {
+  console.log(req.body);
+
+  try {
+    var project = await Project.findById(req.params.id);
+    project.title = req.body.title;
+    project.description = req.body.description;
+    project.dueDate = req.body.dueDate;
+    project.price = req.body.price;
+
+    await project.save();
+    console.log(project);
+    res.json({ project });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+  // Project.findByIdAndUpdate(req.params.id, newProject, function (err, project) {
+  //   if (err) {
+
+  //     console.log(err);
+  //   } else {
+  //     console.log(req.body);
+  //     console.log(project);
+  //     res.json({ project: project });
+  //   }
+  // });
+});
+// change project status
+router.get("/:id/:status", auth.isLoggedIn, async (req, res) => {
+  var status = req.params.status;
+  var id = req.params.id;
+  try {
+    let project = await Project.findById(id);
+    if (!project) {
+      return res.status(400).json({ msg: "Project not found" });
+    }
+    let currentUser = await User.findById(req.user.id);
+    let user = await User.findById(project.employee._id);
+    if (currentUser.isAdmin == true) {
+      project.status = status;
+      if (status == "completed") {
+        project.completionDate = Date.now();
+      }
+      let notification = await Notification.create({
+        description: `Project  ${
+          status === "awaitingPayment"
+            ? "is awaiting payment"
+            : "has been " + status
+        } by administrator`,
+        project: {
+          _id: project._id,
+          title: project.title,
+        },
+        owner: !currentUser.isAdmin ? "admin" : user._id.toString(),
+        category: "project",
+      });
+      console.log(notification);
+      user.notifications.push(notification);
+      await project.save();
+      await user.save();
+      return res.json({ project });
+    } else {
+      if (status == "submitted" || status == "cancelled") {
+        project.status = status;
+
+        await Notification.create({
+          description: `Project has been ${status} by employee`,
+          project: {
+            _id: project._id,
+            title: project.title,
+          },
+          owner: !currentUser.isAdmin ? "admin" : user._id.toString(),
+          category: "project",
+        });
+        await project.save();
+        return res.json({ project });
+      } else {
+        return res
+          .status(400)
+          .json({ msg: "You are not allowed to do that..." });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+});
+router.post("/", auth.isAdmin, upload.array("files", 5), async (req, res) => {
   var name = req.body.employee;
   var files = [];
   for (let index = 0; index < req.files.length; index++) {
     const element = {
       filename: req.files[index].originalname,
-      path: req.files[index].filename
+      path: req.files[index].filename,
     };
     files.push(element);
   }
-  User.findById(name, function (err, user) {
+
+  User.findById(name, async function (err, user) {
     if (err) {
       console.log(err);
     } else {
       Project.create(
         {
           employee: {
-            id: user._id,
-            username: user.firstname + " " + user.lastname,
+            _id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            username: user.firstname + user.lastname,
             image: user.image,
-            email: user.email
           },
           price: req.body.price,
           dueDate: req.body.dueDate,
           description: req.body.description,
           title: req.body.title,
-          files: files
+          files: files,
         },
-        function (err, project) {
+        async function (err, project) {
+          console.log(project);
           user.projects.push(project);
-          user.save();
-          mailer.sendMail({
-            from:'zain.abideen14572@gmail.com',
-            to: user.email,
-            subject: 'New Project',
-            text:`Hi there `+user.firstname +` `+user.lastname + `, You have been assigned a new project form TeckMeadow. Go and check it out`
-          })
-          req.flash("success", "Successfully created a new Project");
-          res.redirect("/admin/project");
+          let currentUser = await User.findById(req.user.id);
+          let notification = await Notification.create({
+            description: "You have been assigned a new project",
+            project: {
+              _id: project._id,
+              title: project.title,
+            },
+            owner: !currentUser.isAdmin ? "admin" : user._id.toString(),
+            category: "project",
+          });
+          console.log(notification);
+          user.notifications.push(notification);
+          await user.save();
+          // mailer.sendMail({
+          //   from: "zain.abideen14572@gmail.com",
+          //   to: user.email,
+          //   subject: "New Project",
+          //   text:
+          //     `Hi there ` +
+          //     user.firstname +
+          //     ` ` +
+          //     user.lastname +
+          //     `, You have been assigned a new project form TeckMeadow. Go and check it out`,
+          // });
+          res.json({ project: project });
         }
       );
-    }
-  });
-});
-
-// ----------
-// Show project Detail
-//
-router.get("/:id", middleware.isAdmin, (req, res) => {
-  Project.findById(req.params.id, function (err, project) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("project/admin/show", { project: project });
     }
   });
 });
@@ -177,23 +203,40 @@ router.get("/:id", middleware.isAdmin, (req, res) => {
 // add files
 router.post(
   "/:id/addfile",
-  middleware.isAdmin,
+  auth.isLoggedIn,
   upload.array("files", 5),
   (req, res) => {
-    Project.findById(req.params.id, function (err, project) {
+    Project.findById(req.params.id, async function (err, project) {
       if (err) {
         console.log(err);
+        res.status(500).json({ msg: "Internal Server Error" });
       } else {
         for (let index = 0; index < req.files.length; index++) {
-          const element = {
+          var element = {
             filename: req.files[index].originalname,
-            path: req.files[index].filename
+            path: req.files[index].filename,
           };
           project.files.push(element);
         }
+        let user = await User.findById(project.employee._id);
+        let currentUser = await User.findById(req.user.id);
+        let notification = await Notification.create({
+          description: "A new file has been added to project",
+          project: {
+            _id: project._id,
+            title: project.title,
+          },
+          owner: !currentUser.isAdmin ? "admin" : user._id.toString(),
+          category: "project",
+        });
+        if (!currentUser.isAdmin) {
+          user.notifications.push(notification);
+          await user.save();
+        }
+
         project.save();
-        req.flash("success", "The files have been added successfully");
-        return res.redirect("/admin/project/" + project._id);
+
+        return res.json({ project });
       }
     });
   }

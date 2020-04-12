@@ -3,19 +3,30 @@ var router = express.Router();
 var path = require("path");
 var Project = require("../models/project");
 var fs = require("fs");
-var middleware = require('../middleware/index');
+var auth = require("../middleware/auth");
 
 /* GET home page. */
-router.get("/:id/download", function(req, res, next) {
-  res.download(path.join(__dirname, "../public/uploads/", req.params.id));
+router.get("/:id/download", function (req, res, next) {
+  console.log(req.params.id);
+  res.download(
+    path.join(__dirname, "../public/uploads/", req.params.id),
+    (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("object");
+      }
+    }
+  );
 });
 
-router.get("/:id/delete/:project/:filename/:fileId",middleware.isAdmin, (req, res) => {
+router.get("/:id/delete/:project/:filename/:fileId", (req, res) => {
   var file;
 
-  Project.findById(req.params.project, function(err, project) {
+  Project.findById(req.params.project, function (err, project) {
     if (err) {
       console.log(err);
+      res.status(500).json({ msg: "Internal Server Error" });
     } else {
       console.log(project);
       let index;
@@ -29,9 +40,7 @@ router.get("/:id/delete/:project/:filename/:fileId",middleware.isAdmin, (req, re
       fs.unlinkSync(path.join(__dirname, "../public/uploads/", file.path));
       project.files.splice(index, 1);
       project.save();
-      req.flash("success", "Successfully deleted the file");
-      res.redirect("back");
-      console.log(index);
+      res.json({ msg: "Successfully deleted the file" });
     }
   });
 });
