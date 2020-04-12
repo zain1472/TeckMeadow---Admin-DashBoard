@@ -120,10 +120,16 @@ io.on("connection", function (socket) {
   });
 });
 
-// render react app page
+const root = require("path").join(__dirname, "client", "build");
+app.use(express.static(root));
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  res.sendFile("index.html", { root });
 });
+
+// render react app page
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// });
 
 http.listen(port, function () {
   console.log("listening on *:5000");
