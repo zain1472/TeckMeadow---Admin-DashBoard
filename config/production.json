@@ -1,0 +1,5 @@
+{
+  "mongoURI": "mongodb+srv://wela:wela@cluster0-d3lhq.mongodb.net/test?retryWrites=true&w=majority",
+  "localMongoURI": "mongodb://localhost:27017/techmeadow",
+  "secret": "Teckmeadow - Rockss"
+}
