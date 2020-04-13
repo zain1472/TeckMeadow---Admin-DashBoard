@@ -8,16 +8,13 @@ var auth = require("../middleware/auth");
 /* GET home page. */
 router.get("/:id/download", function (req, res, next) {
   console.log(req.params.id);
-  res.download(
-    path.join(__dirname, "../client/build/uploads/", req.params.id),
-    (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("file found and downloaded");
-      }
+  res.download(path.join("./client/build/uploads/", req.params.id), (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("file found and downloaded");
     }
-  );
+  });
 });
 
 router.get("/:id/delete/:project/:filename/:fileId", (req, res) => {
@@ -37,9 +34,7 @@ router.get("/:id/delete/:project/:filename/:fileId", (req, res) => {
           break;
         }
       }
-      fs.unlinkSync(
-        path.join(__dirname, "../client/build/uploads/", file.path)
-      );
+      fs.unlinkSync(path.join("./client/build/uploads/", file.path));
       project.files.splice(index, 1);
       project.save();
       res.json({ msg: "Successfully deleted the file" });
