@@ -20,7 +20,7 @@ const MessageItem = ({ message }) => {
       {show === true && (
         <li className={`${message.sender === "admin" && "tb-another-side"}`}>
           <p className="text-muted" style={{ backgroundColor: "white" }}>
-            date
+            {new Date(message.dated).toDateString()}
           </p>
         </li>
       )}
