@@ -21,7 +21,14 @@ import { loadProjects } from "../../actions/AppActions";
 // Routing
 import AdminRoute from "../../routing/AdminRoute";
 import PrivateRoute from "../../routing/PrivateRoute";
-const Home = ({ match, loadUser, getEmployees, loadProjects, isAdmin }) => {
+const Home = ({
+  match,
+  loadUser,
+  getEmployees,
+  loadProjects,
+  isAdmin,
+  loading,
+}) => {
   useEffect(() => {
     loadUser();
     loadProjects();
@@ -80,12 +87,13 @@ const Home = ({ match, loadUser, getEmployees, loadProjects, isAdmin }) => {
           </div>
         </div>
       </div>
-      <LiveChat />
+      {isAdmin !== true && !loading && <LiveChat />}
     </Fragment>
   );
 };
 const mapStateToProps = (state) => ({
   isAdmin: state.auth.isAdmin,
+  loading: state.auth.loading,
 });
 export default connect(mapStateToProps, {
   loadUser,

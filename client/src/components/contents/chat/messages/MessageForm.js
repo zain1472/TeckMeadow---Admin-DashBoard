@@ -8,7 +8,7 @@ const MessageForm = ({ addMessage, currentEmployee, currentUser }) => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     if (currentUser !== null) {
-      const socket = socketIoClient("http://localhost:5000");
+      const socket = socketIoClient("/");
       setSocket(socket);
       socket.on("connect", function () {
         setConnection(true);

@@ -73,37 +73,74 @@ io.on("connection", function (socket) {
     });
     users[data.name] = { socket: socket.id };
   });
-  socket.on("message", (data) => {
-    // store in database and then parse if online
-    Message.create(
-      {
+  socket.on("message", async (data) => {
+    try {
+      let message = await Message.create({
         sender: data.sender,
         reciever: data.reciever,
         message: data.message,
-      },
-      function (err, message) {
-        if (err) {
-          console.log(err);
+      });
+      let user = await User.findById(data.id);
+      console.log(data);
+      user.messages.push(message);
+      await user.save();
+      if (users[data.reciever]) {
+        if (io.sockets.connected[users[data.reciever].socket]) {
+          console.log(data);
+
+          io.sockets.connected[users[data.reciever].socket].emit(
+            "message",
+            data
+          );
         } else {
-          User.findById(data.id, function (err, user) {
-            if (err) {
-              console.log(err);
-            } else {
-              user.messages.push(message);
-              user.save();
-            }
-          });
+          if (data.reciever == "admin") {
+            user.count = user.count + 1;
+            console.log(user);
+            await user.save();
+            console.log("added count");
+          }
+        }
+      } else {
+        if (data.reciever == "admin") {
+          user.count = user.count + 1;
+          console.log(user);
+          await user.save();
+          console.log("added count");
         }
       }
-    );
-    console.log(data);
-    if (users[data.reciever]) {
-      if (io.sockets.connected[users[data.reciever].socket]) {
-        console.log(data);
-
-        io.sockets.connected[users[data.reciever].socket].emit("message", data);
-      }
+    } catch (error) {
+      console.log(error);
     }
+    // store in database and then parse if online
+    // Message.create(
+    //   {
+    //     sender: data.sender,
+    //     reciever: data.reciever,
+    //     message: data.message,
+    //   },
+    //   function (err, message) {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       User.findById(data.id, function (err, user) {
+    //         if (err) {
+    //           console.log(err);
+    //         } else {
+    //           user.messages.push(message);
+    //           user.save();
+    //         }
+    //       });
+    //     }
+    //   }
+    // );
+    // console.log(data);
+    // if (users[data.reciever]) {
+    //   if (io.sockets.connected[users[data.reciever].socket]) {
+    //     console.log(data);
+
+    //     io.sockets.connected[users[data.reciever].socket].emit("message", data);
+    //   }
+    // }
   });
   socket.on("disconnect", function () {
     User.findById(socket.userId, function (err, user) {

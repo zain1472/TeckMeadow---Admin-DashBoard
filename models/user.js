@@ -40,5 +40,9 @@ var userSchema = new mongoose.Schema({
     default: Date.now(),
     type: Date,
   },
+  count: {
+    type: Number,
+    default: 0,
+  },
 });
 module.exports = mongoose.model("User", userSchema);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const MessageNotification = () => {
+  useEffect(() => {}, []);
   return (
     <li className="nav-item dropdown">
       <a
@@ -30,130 +31,15 @@ const MessageNotification = () => {
           <small className="opacity-7">2 unread chats</small>
         </div>
         <div>
-          <ul className="list-group list-group-flush">
-            <li>
-              <a
-                href="#"
-                className="list-group-item d-flex align-items-center hide-show-toggler"
-              >
-                <div>
-                  <figure className="avatar mr-2">
-                    <img
-                      src="../../assets/media/image/user/man_avatar1.jpg"
-                      className="rounded-circle"
-                      alt="user"
-                    />
-                  </figure>
-                </div>
-                <div className="flex-grow-1">
-                  <p className="mb-0 line-height-20 d-flex justify-content-between">
-                    Herbie Pallatina
-                    <i
-                      title="Mark as read"
-                      data-toggle="tooltip"
-                      className="hide-show-toggler-item fa fa-circle-o font-size-11"
-                    ></i>
-                  </p>
-                  <div className="small text-muted">
-                    <span className="mr-2">02:30 PM</span>
-                    <span>Have you madimage</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="list-group-item d-flex align-items-center hide-show-toggler"
-              >
-                <div>
-                  <figure className="avatar mr-2">
-                    <img
-                      src="../../assets/media/image/user/women_avatar5.jpg"
-                      className="rounded-circle"
-                      alt="user"
-                    />
-                  </figure>
-                </div>
-                <div className="flex-grow-1">
-                  <p className="mb-0 line-height-20 d-flex justify-content-between">
-                    Andrei Miners
-                    <i
-                      title="Mark as read"
-                      data-toggle="tooltip"
-                      className="hide-show-toggler-item fa fa-circle-o font-size-11"
-                    ></i>
-                  </p>
-                  <div className="small text-muted">
-                    <span className="mr-2">08:36 PM</span>
-                    <span>I have a meetinimage</span>
-                  </div>
-                </div>
-              </a>
-            </li>
+          <ul
+            className="list-group list-group-flush"
+            style={{ maxHeight: "300px", overflowY: "auto" }}
+            id="noti"
+          >
             <li className="text-divider small pb-2 pl-3 pt-3">
               <span>Old chats</span>
             </li>
-            <li>
-              <a
-                href="#"
-                className="list-group-item d-flex align-items-center hide-show-toggler"
-              >
-                <div>
-                  <figure className="avatar mr-2">
-                    <img
-                      src="../../assets/media/image/user/man_avatar3.jpg"
-                      className="rounded-circle"
-                      alt="user"
-                    />
-                  </figure>
-                </div>
-                <div className="flex-grow-1">
-                  <p className="mb-0 line-height-20 d-flex justify-content-between">
-                    Kevin added
-                    <i
-                      title="Mark as unread"
-                      data-toggle="tooltip"
-                      className="hide-show-toggler-item fa fa-check font-size-11"
-                    ></i>
-                  </p>
-                  <div className="small text-muted">
-                    <span className="mr-2">11:09 PM</span>
-                    <span>Have you madimage</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="list-group-item d-flex align-items-center hide-show-toggler"
-              >
-                <div>
-                  <figure className="avatar mr-2">
-                    <img
-                      src="../../assets/media/image/user/man_avatar2.jpg"
-                      className="rounded-circle"
-                      alt="user"
-                    />
-                  </figure>
-                </div>
-                <div className="flex-grow-1">
-                  <p className="mb-0 line-height-20 d-flex justify-content-between">
-                    Eugenio Carnelley
-                    <i
-                      title="Mark as unread"
-                      data-toggle="tooltip"
-                      className="hide-show-toggler-item fa fa-check font-size-11"
-                    ></i>
-                  </p>
-                  <div className="small text-muted">
-                    <span className="mr-2">Yesterday</span>
-                    <span>I have a meetinimage</span>
-                  </div>
-                </div>
-              </a>
-            </li>
+
             <li>
               <a
                 href="#"

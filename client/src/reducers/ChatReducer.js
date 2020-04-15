@@ -355,8 +355,7 @@ export default (state = initialState, action) => {
         }
         return employee;
       });
-      console.log(action.payload);
-      console.log("object");
+
       return {
         ...state,
         employees: employees,

@@ -17,7 +17,7 @@ const Messages = ({ currentUser }) => {
     if (messages.length !== 0) {
       console.log(messages);
       messagesBottomRef.current.scrollIntoView();
-      const socket = socketIoClient("http://localhost:5000");
+      const socket = socketIoClient("/");
       setSocket(socket);
       console.log("setted");
       socket.on("connect", function () {
@@ -74,6 +74,7 @@ const Messages = ({ currentUser }) => {
               onChange={(e) => onChange(e)}
               placeholder="Add your message..."
               required
+              disabled={socket === null}
               style={{ border: "none", display: "inline-block" }}
             ></input>
           </div>

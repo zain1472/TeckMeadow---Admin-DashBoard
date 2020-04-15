@@ -235,7 +235,8 @@ img {
 .tb-toggle-chat-btn {
   height: 60px;
   width: 60px;
-  background-color: #ffff;
+  color: white;
+  background-color: #007bff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -245,10 +246,13 @@ img {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 30%;
   font-size: 24px;
   position: relative;
   cursor: pointer;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 3px 3px 5px 6px #ccc; /* Firefox 3.5 - 3.6 */
+  box-shadow: 3px 3px 5px 6px #ccc;
 }
 .tb-toggle-chat-btn i {
   -webkit-transition: all 0.3s ease;
@@ -326,4 +330,15 @@ img {
   font-weight: 400;
   src: url(http://localhost:8080/assets/fonts/MaterialIconsOutlinedRegular.html)
     format("woff2");
+}
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 0 0 0px #007bff;
+  }
+  100% {
+    box-shadow: 0 0 0 35px rgba(55, 82, 236, 0);
+  }
+}
+.pulse {
+  animation: shadow-pulse 1s infinite;
 }
