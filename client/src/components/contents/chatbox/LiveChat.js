@@ -39,7 +39,6 @@ const LiveChat = ({ currentUser, clearHaveUnreadMessages }) => {
         onClick={() => {
           setActive(!active);
           clearHaveUnreadMessages(currentUser);
-          console.log("object");
         }}
       >
         <i className="fas fa-comment-alt"></i>
