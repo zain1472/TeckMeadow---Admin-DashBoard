@@ -16,11 +16,10 @@ const Messages = ({ currentUser }) => {
   }, [currentUser]);
   useEffect(() => {
     if (messages.length !== 0) {
-      console.log(messages);
       messagesBottomRef.current.scrollIntoView();
       const socket = socketIoClient("/");
       setSocket(socket);
-      console.log("setted");
+
       socket.on("connect", function () {
         setConnection(true);
         if (currentUser !== null) {
@@ -56,15 +55,14 @@ const Messages = ({ currentUser }) => {
   };
   const onChange = (e) => {
     setText(e.target.value);
-    console.log(text);
   };
   return (
     <Fragment>
       <ul className="tb-reverse-scroll tb-conversation-list">
-        {messages.map((message) => (
-          <MessageItem key={message._id} message={message} />
+        {messages.map((message, key) => (
+          <MessageItem key={key} message={message} />
         ))}
-        <li ref={messagesBottomRef}></li>
+        <li key="-1" ref={messagesBottomRef}></li>
       </ul>
       <div className="tb-conversion-input">
         <form onSubmit={(e) => onSubmit(e)} style={{ width: "100%" }}>
