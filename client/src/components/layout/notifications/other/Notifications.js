@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import NewNotifications from "./NewNotifications";
 import OldNotifications from "./OldNotifications";
@@ -29,9 +28,6 @@ const Notifications = ({ notifications }) => {
   );
 };
 
-NewNotifications.propTypes = {
-  notifications: PropTypes.object.isRequired,
-};
 const mapStateToProps = (state) => ({
   notifications: state.notification.notifications,
 });

@@ -1,8 +1,6 @@
 import {
   ADD_MESSAGE,
   SET_LOADING,
-  SET_CONTACTS,
-  SET_CONNECTION,
   SET_SOCKET,
   CLEAR_SOCKET,
   SET_IS_CHAT_ACTIVE,
@@ -14,6 +12,8 @@ import {
   APP_ERROR,
   SET_EMPLOYEES,
   CLEAR_CURRENT_EMPLOYEE,
+  CLEAR_MESSAGE_COUNT,
+  CLEAR_HAVE_UNREAD_MESSAGES,
 } from "../actions/types";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
@@ -72,6 +72,24 @@ export const setCurrentEmployee = (employee) => {
     payload: employee,
   };
 };
+
+export const clearCount = (employee) => async (dispatch) => {
+  setIsChatActive();
+  try {
+    axios.put(`/api/users/${employee._id}/count`);
+    employee.count = 0;
+    dispatch({
+      type: CLEAR_MESSAGE_COUNT,
+      payload: employee,
+    });
+  } catch (error) {
+    dispatch({
+      type: APP_ERROR,
+      payload: error.response.msg,
+    });
+  }
+};
+
 export const setLoading = () => {
   return {
     type: SET_LOADING,
@@ -104,3 +122,21 @@ export const clearSocket = () => (dispatch) => {
 export const clearCurrentEmployee = () => ({
   type: CLEAR_CURRENT_EMPLOYEE,
 });
+
+// clear haveUnreadMessages for chatbox pulse notfication animation
+
+export const clearHaveUnreadMessages = (user) => (dispatch) => {
+  try {
+    user.haveUnreadMessages = false;
+    axios.put(`/api/users/${user._id}/haveUnreadMessages`);
+    dispatch({
+      type: CLEAR_HAVE_UNREAD_MESSAGES,
+      payload: user,
+    });
+  } catch (error) {
+    dispatch({
+      type: APP_ERROR,
+      payload: error.response.msg,
+    });
+  }
+};

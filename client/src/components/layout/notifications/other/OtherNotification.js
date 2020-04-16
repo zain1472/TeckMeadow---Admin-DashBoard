@@ -19,7 +19,7 @@ const OtherNotifications = ({
   return (
     <li className="nav-item dropdown">
       <a
-        href="#"
+        href="#!"
         className={`nav-link ${count !== 0 && "nav-link-notify"}`}
         title="Notifications"
         data-toggle="dropdown"

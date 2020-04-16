@@ -8,11 +8,10 @@ import Footer from "../../layout/Footer";
 import Chats from "./layout/chats/Chats";
 import Contacts from "./layout/contacts/Contacts";
 import ChatHeader from "./layout/ChatHeader";
-import { getEmployees } from "../../../actions/AppActions";
-const ChatContent = ({ getEmployees }) => {
+const ChatContent = () => {
   useEffect(() => {
     document.body.classList = "chat-app small-navigation boxed-layout";
-    getEmployees();
+
     // eslint-disable-next-line
   }, []);
   return (
@@ -65,4 +64,4 @@ const ChatContent = ({ getEmployees }) => {
     </div>
   );
 };
-export default connect(null, { getEmployees })(ChatContent);
+export default connect(null)(ChatContent);

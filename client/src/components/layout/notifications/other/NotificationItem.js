@@ -8,16 +8,21 @@ import {
 const NotificationItem = ({
   notification,
   clearNotification,
+  isAdmin,
   deleteNotification,
 }) => {
+  let link = "#!";
+  if (notification.category === "project") {
+    link = `projects/${notification.project._id}`;
+  } else if (notification.category === "employee") {
+    link = `employees/${notification.employee._id}`;
+  } else if (isAdmin) {
+    link = "/chat";
+  }
   return (
     <li>
       <Link
-        to={`/${
-          notification.category === "project"
-            ? `projects/${notification.project._id}`
-            : `employees/${notification.employee._id}`
-        }`}
+        to={link}
         className="list-group-item d-flex align-items-center hide-show-toggler"
       >
         <div>
@@ -77,7 +82,10 @@ const NotificationItem = ({
     </li>
   );
 };
-
-export default connect(null, { clearNotification, deleteNotification })(
-  NotificationItem
-);
+const mapStateToProps = (state) => ({
+  isAdmin: state.auth.isAdmin,
+});
+export default connect(mapStateToProps, {
+  clearNotification,
+  deleteNotification,
+})(NotificationItem);

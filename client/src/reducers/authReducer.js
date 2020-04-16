@@ -6,10 +6,10 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGOUT,
-  SET_LOADING,
   CLEAR_ERROR,
   SET_AUTH_LOADING,
   CLEAR_AUTH_LOADING,
+  CLEAR_HAVE_UNREAD_MESSAGES,
 } from "../actions/types";
 const initialState = {
   user: null,
@@ -22,6 +22,11 @@ const initialState = {
 };
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_HAVE_UNREAD_MESSAGES:
+      return {
+        ...state,
+        user: action.payload,
+      };
     case SET_AUTH_LOADING:
       return {
         ...state,

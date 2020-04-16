@@ -1,7 +1,15 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { setCurrentEmployee } from "../../../../../actions/ChatActions";
-const ChatItem = ({ employee, setCurrentEmployee, currentEmployee }) => {
+import {
+  setCurrentEmployee,
+  clearCount,
+} from "../../../../../actions/ChatActions";
+const ChatItem = ({
+  employee,
+  setCurrentEmployee,
+  currentEmployee,
+  clearCount,
+}) => {
   let isChatActive = false;
   let message = "",
     dated = "";
@@ -24,7 +32,9 @@ const ChatItem = ({ employee, setCurrentEmployee, currentEmployee }) => {
         className={`list-group-item d-flex align-items-center ${
           isChatActive ? "active" : ""
         }`}
-        onClick={() => setCurrentEmployee(employee)}
+        onClick={() => {
+          clearCount(employee);
+        }}
       >
         <div className="pr-3">
           <div className="avatar ">
@@ -54,4 +64,6 @@ const ChatItem = ({ employee, setCurrentEmployee, currentEmployee }) => {
 const mapStateToProps = (state) => ({
   currentEmployee: state.chat.currentEmployee,
 });
-export default connect(mapStateToProps, { setCurrentEmployee })(ChatItem);
+export default connect(mapStateToProps, { setCurrentEmployee, clearCount })(
+  ChatItem
+);

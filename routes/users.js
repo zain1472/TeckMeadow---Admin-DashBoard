@@ -68,28 +68,7 @@ router.post("/", upload.single("photo"), async (req, res) => {
   }
 });
 // handling new user
-router.post("/register", upload.single("photo"), (req, res) => {
-  var newUser = new User({
-    lastname: req.body.lastname,
-    firstname: req.body.firstname,
-    image: req.file.filename,
-    country: req.body.country,
-    email: req.body.email,
-    active: false,
-  });
-  User.register(newUser, req.body.password, function (err) {
-    if (err) {
-      console.log(err);
-      req.flash("error", err.message);
-      return res.redirect("/user/register");
-    } else {
-      passport.authenticate("local")(req, res, function () {
-        req.flash("success", "Successfully registered your new account");
-        res.redirect("/user/verify");
-      });
-    }
-  });
-});
+
 router.get("/verify", middleware.isAuthenticated, (req, res) => {
   mailer.sendMail(
     {
@@ -121,29 +100,6 @@ router.get("/verify/:id", middleware.isAuthenticated, (req, res) => {
       user.save();
       req.flash("success", "Welcome to TeckMeadow");
       res.redirect("/");
-    }
-  });
-});
-router.post("/:id/makeAdmin", middleware.isAdmin, (req, res) => {
-  var isAdmin = false;
-  if (req.body.isAdmin == "true") {
-    isAdmin = true;
-  }
-  var user = {
-    isAdmin: isAdmin,
-  };
-  User.findById(req.params.id, function (err, newUser) {
-    if (err) {
-      console.log(err);
-      req.flash("error", err.message);
-      return res.redirect("/admin/user/" + req.params.id);
-    } else {
-      newUser.isAdmin = isAdmin;
-      console.log(isAdmin);
-      newUser.save();
-      req.flash("error", "New changes have been saved successfully");
-      res.redirect("/admin/user/" + req.params.id);
-      console.log(newUser);
     }
   });
 });
@@ -220,6 +176,7 @@ router.put(
     }
   }
 );
+
 router.get("/changePassword", (req, res, next) => {
   res.render("/user/changePassword");
 });
@@ -237,5 +194,35 @@ router.delete("/:id/", auth.isAdmin, (req, res) => {
         res.json({ user });
       }
     });
+});
+
+// User Notifications
+// clear notification count of messages in admin chat
+router.put("/:id/count", async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id)
+      .populate("messages")
+      .populate("projects");
+    user.count = 0;
+    await user.save();
+    res.json({ user });
+    console.log(user);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Servar" });
+  }
+});
+// clear unread messages
+router.put("/:id/haveUnreadMessages", async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id)
+      .populate("messages")
+      .populate("projects");
+    user.haveUnreadMessages = false;
+    await user.save();
+    res.json({ user });
+    console.log(user);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Servar" });
+  }
 });
 module.exports = router;

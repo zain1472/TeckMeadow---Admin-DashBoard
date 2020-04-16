@@ -34,11 +34,15 @@ router.delete("/:id", auth.isAdmin, (req, res) => {
       console.log(err);
       res.status(500).json({ msg: "Internal server error" });
     } else {
-      for (let index = 0; index < project.files.length; index++) {
-        const element = project.files[index];
-        fs.unlinkSync(
-          path.join(__dirname, "../client/build/uploads/", element.path)
-        );
+      try {
+        for (let index = 0; index < project.files.length; index++) {
+          const element = project.files[index];
+          fs.unlinkSync(
+            path.join(__dirname, "../client/build/uploads/", element.path)
+          );
+        }
+      } catch (error) {
+        console.log(error);
       }
 
       console.log(project);

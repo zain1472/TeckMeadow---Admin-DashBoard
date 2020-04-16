@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 // Notifications
-import MessageNotification from "./notifications/message/MessageNotification";
 import OtherNotification from "./notifications/other/OtherNotification";
 import { loadNotifications } from "../../actions/NotificationActions";
 const Header = ({ currentUser, loadNotifications }) => {
@@ -57,7 +56,6 @@ const Header = ({ currentUser, loadNotifications }) => {
           </div>
           <div className="header-body-right">
             <ul className="navbar-nav">
-              <MessageNotification />
               <OtherNotification />
               {/* <!-- begin::header fullscreen --> */}
               <li className="nav-item dropdown">

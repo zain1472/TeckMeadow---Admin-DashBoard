@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Messages from "./Messages";
-const LiveChat = () => {
+import { connect } from "react-redux";
+import { clearHaveUnreadMessages } from "../../../actions/ChatActions";
+const LiveChat = ({ currentUser, clearHaveUnreadMessages }) => {
   const [active, setActive] = useState(false);
   return (
     <div className={`tb-toggle-chat-wrap ${active && "tb-active"}`}>
@@ -28,8 +30,17 @@ const LiveChat = () => {
       </div>
       {/* <!-- .tb-live-chat-wrap --> */}
       <div
-        className="tb-toggle-chat-btn pulse"
-        onClick={() => setActive(!active)}
+        href="#!"
+        className={`tb-toggle-chat-btn ${
+          currentUser !== null &&
+          currentUser.haveUnreadMessages === true &&
+          "pulse"
+        }`}
+        onClick={() => {
+          setActive(!active);
+          clearHaveUnreadMessages(currentUser);
+          console.log("object");
+        }}
       >
         <i className="fas fa-comment-alt"></i>
         <i className="fas fa-times"></i>
@@ -38,4 +49,7 @@ const LiveChat = () => {
   );
 };
 
-export default LiveChat;
+const mapStateToProps = (state) => ({
+  currentUser: state.auth.user,
+});
+export default connect(mapStateToProps, { clearHaveUnreadMessages })(LiveChat);

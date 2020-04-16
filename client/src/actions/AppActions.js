@@ -2,7 +2,6 @@ import axios from "axios";
 import {
   UPDATE_USER,
   APP_ERROR,
-  SET_ALERT,
   SET_UPLOAD_PROGRESS,
   CLEAR_UPLOAD_PROGRESS,
   CREATE_NEW_PROJECT,
@@ -21,19 +20,7 @@ import setAuthToken from "../utils/setAuthToken";
 import { setAlert } from "./AlertActions";
 import { loadUser } from "./authActions";
 import { setLoading } from "../actions/ChatActions";
-export const getEmployees = () => async (dispatch) => {
-  try {
-    const res = await axios.get("/api/employees");
 
-    // dispatch({
-    //   type: SET_EMPLOYEES,
-    //   payload: res.data.employees
-    // });
-  } catch (error) {
-    console.log(error);
-    console.log("error occured");
-  }
-};
 // update a user
 export const updateUser = (user) => async (dispatch) => {
   var formData = new FormData();

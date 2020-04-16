@@ -12,6 +12,7 @@ const Messages = ({ currentUser }) => {
     if (currentUser !== null) {
       setMessages(currentUser.messages);
     }
+    // eslint-disable-next-line
   }, [currentUser]);
   useEffect(() => {
     if (messages.length !== 0) {
@@ -38,6 +39,7 @@ const Messages = ({ currentUser }) => {
         });
       });
     }
+    // eslint-disable-next-line
   }, [messages]);
   const onSubmit = (e) => {
     e.preventDefault();
@@ -72,9 +74,9 @@ const Messages = ({ currentUser }) => {
               type="text"
               value={text}
               onChange={(e) => onChange(e)}
-              placeholder="Add your message..."
+              placeholder={connection ? "Add your message..." : "Connecting..."}
               required
-              disabled={socket === null}
+              disabled={!connection}
               style={{ border: "none", display: "inline-block" }}
             ></input>
           </div>

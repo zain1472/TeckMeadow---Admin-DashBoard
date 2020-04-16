@@ -28,6 +28,7 @@ import {
   DELETE_USER,
   SET_CURRENT_USER,
   AUTH_ERROR,
+  CLEAR_MESSAGE_COUNT,
 } from "../actions/types";
 let dated = new Date(Date.now());
 const initialState = {
@@ -319,20 +320,24 @@ export default (state = initialState, action) => {
         ...state,
         filtered: null,
       };
-    case SET_CURRENT_EMPLOYEE:
-      let emp;
-      state.employees.map((employee) => {
+    case CLEAR_MESSAGE_COUNT:
+      let emps = state.employees.map((employee) => {
         if (employee._id === action.payload._id) {
-          employee.count = 0;
-          emp = employee;
+          employee = action.payload;
           return employee;
         }
         return employee;
       });
       return {
         ...state,
+        employees: emps,
+        currentEmployee: action.payload,
+      };
+    case SET_CURRENT_EMPLOYEE:
+      return {
+        ...state,
         messages: action.payload.messages,
-        currentEmployee: emp,
+        currentEmployee: action.payload,
       };
     case CLEAR_CURRENT_EMPLOYEE:
       return {

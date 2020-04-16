@@ -25,10 +25,10 @@ const MessageForm = ({ addMessage, currentEmployee, currentUser }) => {
         });
       });
     }
+    // eslint-disable-next-line
   }, [currentUser]);
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (text !== "") {
       let date = new Date(Date.now());
       addMessage({

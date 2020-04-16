@@ -31,7 +31,7 @@ const OldNotifications = ({ notifications }) => {
 };
 
 OldNotifications.propTypes = {
-  notifications: PropTypes.object.isRequired,
+  notifications: PropTypes.array.isRequired,
 };
 const mapStateToProps = (state) => ({
   notifications: state.notification.notifications,

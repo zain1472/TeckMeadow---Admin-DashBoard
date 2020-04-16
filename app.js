@@ -15,6 +15,7 @@ var authRoutes = require("./routes/auth");
 var fileRoutes = require("./routes/fileRoutes");
 var notificationRoutes = require("./routes/notificationRoutes");
 var Message = require("./models/message");
+var Notification = require("./models/notification");
 var users = [];
 const port = process.env.PORT || 5000;
 // mongoose.connect(
@@ -98,6 +99,23 @@ io.on("connection", function (socket) {
             console.log(user);
             await user.save();
             console.log("added count");
+            let notification = await Notification.create({
+              category: "message",
+              owner: "admin",
+              description: "You have a new message, Click to open messenger",
+              message: data,
+            });
+            user.notifications.push(notification);
+          } else {
+            let notification = await Notification.create({
+              category: "message",
+              owner: user._id,
+              description: "You have a new messages from Teckmeadow",
+              message: data,
+            });
+            user.notifications.push(notification);
+            user.haveUnreadMessages = true;
+            await user.save();
           }
         }
       } else {

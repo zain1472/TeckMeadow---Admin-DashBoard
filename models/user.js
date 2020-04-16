@@ -44,5 +44,9 @@ var userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  haveUnreadMessages: {
+    type: Boolean,
+    default: false,
+  },
 });
 module.exports = mongoose.model("User", userSchema);

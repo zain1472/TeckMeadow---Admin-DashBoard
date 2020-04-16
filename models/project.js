@@ -20,6 +20,12 @@ var projectSchema = new mongoose.Schema({
     type: String,
     default: "ongoing",
   },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comment",
+    },
+  ],
   completionDate: Date,
 });
 
