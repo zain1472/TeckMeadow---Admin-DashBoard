@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
+import { loadProjects } from "../../../actions/AppActions";
 // Tab - Contents
 import Permissions from "../profile/Permissions";
 import Projects from "../profile/Projects";
 import AssignProject from "../profile/AssignProject";
-const Profile = ({ currentUser, projects, currentEmployee }) => {
+const Profile = ({ currentUser, projects, currentEmployee, loadProjects }) => {
   const permission = useRef(null);
   useEffect(() => {
     if (currentEmployee !== null) {
@@ -12,7 +13,25 @@ const Profile = ({ currentUser, projects, currentEmployee }) => {
     } else {
       setUser(currentUser);
     }
+
+    // eslint-disable-next-line
   }, [currentUser, currentEmployee]);
+  let count = 0;
+  if (currentEmployee === null) {
+    projects.map((project) => {
+      if (project.status === "completed") {
+        count++;
+      }
+      return project;
+    });
+  } else {
+    currentEmployee.projects.map((project) => {
+      if (project.status === "completed") {
+        count++;
+      }
+      return project;
+    });
+  }
   const [user, setUser] = useState(null);
   return (
     <div className="">
@@ -46,7 +65,7 @@ const Profile = ({ currentUser, projects, currentEmployee }) => {
                   <div className="card-body">
                     <div className="row text-center">
                       <div className="col-12 text-success">
-                        <h4 className="font-weight-bold">{projects.length}</h4>
+                        <h4 className="font-weight-bold">{count}</h4>
                         <span>Total Payments</span>
                       </div>
                     </div>
@@ -120,7 +139,7 @@ const Profile = ({ currentUser, projects, currentEmployee }) => {
 };
 const mapStateToProps = (state) => ({
   currentUser: state.auth.user,
-  projects: state.app.projects,
+  projects: state.chat.projects,
   currentEmployee: state.chat.currentEmployee,
 });
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { loadProjects })(Profile);

@@ -5,12 +5,13 @@ const SideBar = ({ logoutUser, currentUser }) => {
   return (
     <div className="sidebar-group">
       <div className="sidebar" id="user-menu">
-        <div
-          className="py-4 text-center"
-          data-backround-image="/assets/media/image/image1.jpg"
-        >
+        <div className="py-4 text-center background">
           <figure className="avatar avatar-lg mb-3 border-0">
-            <img src="/uploads/" className="rounded-circle" alt="hiii" />
+            <img
+              src={`/uploads/${currentUser !== null && currentUser.image}`}
+              className="rounded-circle"
+              alt="hiii"
+            />
           </figure>
           <h5 className="d-flex align-items-center justify-content-center">
             {currentUser !== null &&

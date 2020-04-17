@@ -10,7 +10,7 @@ var methodOverride = require("method-override");
 var userRoutes = require("./routes/users");
 var adminRoutes = require("./routes/adminRoutes");
 var projectRoutes = require("./routes/projectRoutes");
-var userProjectRoutes = require("./routes/userProjectRoutes");
+var commentRoutes = require("./routes/commentRoutes");
 var authRoutes = require("./routes/auth");
 var fileRoutes = require("./routes/fileRoutes");
 var notificationRoutes = require("./routes/notificationRoutes");
@@ -55,9 +55,8 @@ app.get("/api/employees", auth.isAdmin, (req, res) => {
 app.use(require("express").static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/admin", adminRoutes);
 app.use("/api/projects", projectRoutes);
-app.use("/user/project", userProjectRoutes);
+app.use("/api/comments/", commentRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/notifications", notificationRoutes);
 io.on("connection", function (socket) {

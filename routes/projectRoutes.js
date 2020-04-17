@@ -13,15 +13,19 @@ var Notification = require("../models/notification");
 router.get("/", auth.isLoggedIn, async (req, res) => {
   const user = await User.findById(req.user.id);
   if (user.isAdmin == true) {
-    Project.find({}, function (err, projects) {
-      if (err) {
-        res.status(500).json({ msg: "Internal Server error" });
-      } else {
-        res.json({ projects: projects });
-      }
-    });
+    Project.find({})
+      .populate("comments")
+      .exec(function (err, projects) {
+        if (err) {
+          res.status(500).json({ msg: "Internal Server error" });
+        } else {
+          res.json({ projects: projects });
+        }
+      });
   } else {
-    const employee = await User.findById(req.user.id).populate("projects");
+    const employee = await User.findById(req.user.id)
+      .populate("projects")
+      .populate("comments");
     res.json({ projects: employee.projects });
   }
 });

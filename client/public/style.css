@@ -342,3 +342,7 @@ img {
 .pulse {
   animation: shadow-pulse 1s infinite;
 }
+.background {
+  background-image: url("/assets/media/image/image1.jpg");
+  background-size: contain;
+}

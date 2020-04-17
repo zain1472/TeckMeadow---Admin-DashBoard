@@ -29,6 +29,8 @@ import {
   SET_CURRENT_USER,
   AUTH_ERROR,
   CLEAR_MESSAGE_COUNT,
+  ADD_COMMENT,
+  DELETE_COMMENT,
 } from "../actions/types";
 let dated = new Date(Date.now());
 const initialState = {
@@ -157,6 +159,35 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case DELETE_COMMENT:
+      let project;
+      let comments;
+      let x = state.projects.map((p) => {
+        if (p._id === action.payload.projectId) {
+          p.comments = p.comments.filter(
+            (comment) => comment._id !== action.payload._id
+          );
+          comments = p.comments;
+          project = p;
+          return project;
+        }
+        return p;
+      });
+      console.log(project);
+      return {
+        ...state,
+        projects: x,
+        currentProject: { ...state.currentProject, comments: [...comments] },
+      };
+    case ADD_COMMENT:
+      let projects = state.projects.map((project) =>
+        project._id === action.payload._id ? action.payload : project
+      );
+      return {
+        ...state,
+        projects: projects,
+        currentProject: action.payload,
+      };
     case SET_CURRENT_USER:
       return {
         ...state,
@@ -244,6 +275,16 @@ export default (state = initialState, action) => {
         filteredProjects: null,
       };
     case UPDATE_PROJECT:
+      let Employees = state.employees.map((e) => {
+        if (action.payload.employee._id.toString() === e._id.toString()) {
+          e.projects.map((project) =>
+            // eslint-disable-next-line
+            project._id == action.payload._id ? action.payload : project
+          );
+          return e;
+        }
+        return e;
+      });
       return {
         ...state,
         projects: state.projects.map((project) =>
@@ -251,6 +292,7 @@ export default (state = initialState, action) => {
           project._id == action.payload._id ? action.payload : project
         ),
         currentProject: state.currentProject === null ? null : action.payload,
+        employees: Employees,
       };
     case DELETE_PROJECT:
       return {
@@ -334,10 +376,17 @@ export default (state = initialState, action) => {
         currentEmployee: action.payload,
       };
     case SET_CURRENT_EMPLOYEE:
+      let employee;
+      state.employees.map((e) => {
+        if (action.payload._id === e._id) {
+          employee = e;
+        }
+        return e;
+      });
       return {
         ...state,
         messages: action.payload.messages,
-        currentEmployee: action.payload,
+        currentEmployee: employee,
       };
     case CLEAR_CURRENT_EMPLOYEE:
       return {
